@@ -1,5 +1,8 @@
 package hu.krisztofertarr.forum.model;
 
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +12,11 @@ import lombok.Data;
 @Data
 public class Category {
 
+    @DocumentId
     private String name;
     private String description;
 
+    @Exclude
     private List<Forum> forums;
 
     public Category() {

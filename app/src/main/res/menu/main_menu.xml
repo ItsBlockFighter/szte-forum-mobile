@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Home, Account (Settings or Login and Register) these with icons -->
+    <item
+        android:id="@+id/home_button"
+        android:icon="@drawable/house_solid"
+        android:title="Home"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/login_button"
+        android:icon="@drawable/right_to_bracket_solid"
+        android:orderInCategory="1"
+        android:title="Bejelentkezés"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <!-- register -->
+    <item
+        android:id="@+id/register_button"
+        android:icon="@drawable/user_plus_solid"
+        android:orderInCategory="2"
+        android:title="Regisztráció"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/log_out_button"
+        android:icon="@drawable/circle_xmark_solid"
+        android:orderInCategory="2"
+        android:title="Kijelentkezés"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/settings_button"
+        android:icon="@drawable/user_gear_solid"
+        android:orderInCategory="1"
+        android:title="Fiók"
+        android:visible="false"
+        app:showAsAction="never" />
+</menu>

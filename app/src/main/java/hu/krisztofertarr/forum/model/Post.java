@@ -1,6 +1,8 @@
 package hu.krisztofertarr.forum.model;
 
 
+import com.google.firebase.firestore.PropertyName;
+
 import java.util.Date;
 
 import lombok.Data;
@@ -13,7 +15,10 @@ public class Post {
 
     private User author;
 
+    @PropertyName("creation_date")
     private Date creationDate;
+
+    @PropertyName("last_update")
     private Date lastUpdate;
 
     public Post() {
