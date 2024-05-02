@@ -41,17 +41,17 @@
             android:textSize="10sp" />
 
         <!-- divider -->
+
+        <!-- Post content -->
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/tv_date"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
             android:layout_toEndOf="@id/tv_user_img"
             android:background="@color/black" />
 
-        <!-- Post content -->
         <TextView
             android:id="@+id/tv_content"
             android:layout_width="wrap_content"
@@ -60,6 +60,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
+            android:inputType="textMultiLine"
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
             android:textSize="16sp" />
 
