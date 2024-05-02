@@ -1,24 +1,26 @@
 package hu.krisztofertarr.forum.model;
 
 
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.PropertyName;
 
 import java.util.Date;
 
 import lombok.Data;
 
-// Comment
 @Data
 public class Post {
 
+    @DocumentId
+    private String id;
+
+    private String threadId;
+
     private String content;
 
-    private User author;
+    private String authorId;
 
-    @PropertyName("creation_date")
     private Date creationDate;
-
-    @PropertyName("last_update")
     private Date lastUpdate;
 
     public Post() {
@@ -26,8 +28,10 @@ public class Post {
         this.lastUpdate = new Date();
     }
 
-    public Post(String content, User author) {
+    public Post(String threadId, String content, String authorId) {
+        this();
+        this.threadId = threadId;
         this.content = content;
-        this.author = author;
+        this.authorId = authorId;
     }
 }
