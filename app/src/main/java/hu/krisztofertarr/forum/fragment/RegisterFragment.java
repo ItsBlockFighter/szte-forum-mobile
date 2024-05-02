@@ -1,0 +1,98 @@
+package hu.krisztofertarr.forum.fragment;
+
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import hu.krisztofertarr.forum.ForumApplication;
+import hu.krisztofertarr.forum.R;
+import hu.krisztofertarr.forum.service.AuthService;
+import hu.krisztofertarr.forum.util.Callback;
+import hu.krisztofertarr.forum.util.ConditionUtil;
+import hu.krisztofertarr.forum.util.ComponentUtil;
+import hu.krisztofertarr.forum.util.annotation.ButtonId;
+import hu.krisztofertarr.forum.util.annotation.FieldId;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+public class RegisterFragment extends Fragment {
+
+    private ForumApplication application;
+    private AuthService authService;
+
+    public RegisterFragment(ForumApplication application) {
+        this();
+        this.application = application;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        authService = AuthService.getInstance();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_register, container, false);
+        ComponentUtil.load(this, view);
+
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
+        view.startAnimation(animation);
+
+        return view;
+    }
+
+    @FieldId("username")
+    private EditText usernameField;
+
+    @FieldId("password")
+    private EditText passwordField;
+
+    @FieldId("email")
+    private EditText emailField;
+
+    @ButtonId("register")
+    public void register(View view) {
+        Log.d("RegisterFragment", "register: Registering new user");
+        ConditionUtil.assertIsNotEmpty(usernameField.getText().toString(), "Username field is null");
+        ConditionUtil.assertIsNotEmpty(passwordField.getText().toString(), "Password field is null");
+        ConditionUtil.assertIsNotEmpty(emailField.getText().toString(), "Email field is null");
+
+        authService.register(emailField.getText().toString(), passwordField.getText().toString())
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        authService.updateUsername(usernameField.getText().toString(), new Callback<Void>() {
+                            @Override
+                            public void onSuccess(Void data) {
+                                Toast.makeText(getContext(), "Registration successful", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Toast.makeText(getContext(), "Registration failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        application.replaceFragment(new LoginFragment(application));
+                    } else {
+                        Toast.makeText(getContext(), "Registration failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    @ButtonId("back_to_login")
+    public void backToLogin(View view) {
+        application.replaceFragment(new LoginFragment(application));
+    }
+}

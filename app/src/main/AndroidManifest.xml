@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,29 +17,9 @@
         android:theme="@style/Theme.Forummobileapp"
         tools:targetApi="31">
         <activity
-            android:name=".activity.ThreadActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Material3.Dark" />
-        <activity
-            android:name=".activity.ForumActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Material3.Dark" />
-        <activity
-            android:name=".activity.HomeActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Material3.Dark" />
-        <activity
-            android:name=".activity.RegisterActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Material3.Dark" />
-        <activity
-            android:name=".activity.LoginActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Material3.Dark" />
-        <activity
             android:name=".ForumApplication"
             android:exported="true"
-            android:theme="@style/Theme.Material3.Dark">
+            android:theme="@style/Theme.Material3.Dark.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
