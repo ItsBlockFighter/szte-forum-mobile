@@ -1,0 +1,73 @@
+package hu.krisztofertarr.forum.util;
+
+import android.annotation.SuppressLint;
+import android.view.View;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.function.BiFunction;
+
+import hu.krisztofertarr.forum.util.annotation.ButtonId;
+import hu.krisztofertarr.forum.util.annotation.FieldId;
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class ComponentUtil {
+
+
+    private static final BiFunction<Object, Method, View.OnClickListener> buttonClickListener = (instance, method) -> v -> {
+        try {
+            method.invoke(instance, v);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    };
+
+    public void load(Object instance, View view) {
+        loadButtons(instance, view);
+        loadFields(instance, view);
+    }
+
+    public void loadFields(Object instance, View view) {
+        final Class<?> clazz = instance.getClass();
+
+        for(Field field : clazz.getDeclaredFields()) {
+            final FieldId fieldId = field.getAnnotation(FieldId.class);
+            if(fieldId == null) {
+                continue;
+            }
+            final String name = fieldId.value();
+
+            int id = findId(view, name);
+
+            try {
+                field.setAccessible(true);
+                field.set(instance, view.findViewById(id));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void loadButtons(Object instance, View view) {
+        final Class<?> clazz = instance.getClass();
+
+        for(Method method : clazz.getDeclaredMethods()) {
+            final ButtonId buttonId = method.getAnnotation(ButtonId.class);
+            if(buttonId == null) {
+                continue;
+            }
+            final String name = buttonId.value();
+
+            int button = findId(view, name);
+
+            view.findViewById(button)
+                    .setOnClickListener(buttonClickListener.apply(instance, method));
+        }
+    }
+
+    @SuppressLint("DiscouragedApi")
+    public int findId(View view, String name) {
+        return view.getResources().getIdentifier(name, "id", view.getContext().getPackageName());
+    }
+}
