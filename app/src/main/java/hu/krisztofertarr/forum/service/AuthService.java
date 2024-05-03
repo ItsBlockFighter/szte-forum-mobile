@@ -7,7 +7,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import hu.krisztofertarr.forum.util.Callback;
 
@@ -48,7 +47,7 @@ public class AuthService {
         return auth.signInWithEmailAndPassword(email, password);
     }
 
-    public FirebaseUser user() {
+    public FirebaseUser getUser() {
         return auth.getCurrentUser();
     }
 
@@ -58,7 +57,7 @@ public class AuthService {
     }
 
     public void updateUsername(String string, Callback<Void> callback) {
-        user().updateProfile(new UserProfileChangeRequest.Builder()
+        getUser().updateProfile(new UserProfileChangeRequest.Builder()
                 .setDisplayName(string)
                 .build())
                 .addOnCompleteListener(task -> {
@@ -71,7 +70,7 @@ public class AuthService {
     }
 
     public void updateAvatar(Uri uri, Callback<Void> callback) {
-        user().updateProfile(new UserProfileChangeRequest.Builder()
+        getUser().updateProfile(new UserProfileChangeRequest.Builder()
                 .setPhotoUri(uri)
                 .build())
                 .addOnCompleteListener(task -> {
@@ -81,5 +80,9 @@ public class AuthService {
                         callback.onFailure(task.getException());
                     }
                 });
+    }
+
+    public String getUsernameByUserId(String userId) {
+        return null;
     }
 }
