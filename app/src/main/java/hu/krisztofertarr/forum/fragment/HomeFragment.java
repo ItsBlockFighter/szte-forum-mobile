@@ -23,7 +23,6 @@ import hu.krisztofertarr.forum.model.Category;
 import hu.krisztofertarr.forum.model.Forum;
 import hu.krisztofertarr.forum.model.adapter.CategoryAdapter;
 import hu.krisztofertarr.forum.service.ForumService;
-import hu.krisztofertarr.forum.service.ForumServiceOld;
 import hu.krisztofertarr.forum.util.Callback;
 import hu.krisztofertarr.forum.util.ComponentUtil;
 import hu.krisztofertarr.forum.util.annotation.FieldId;

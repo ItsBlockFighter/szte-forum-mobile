@@ -49,7 +49,7 @@ public class ForumApplication extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if(authService.isLoggedIn()) {
+        if (authService.isLoggedIn()) {
             replaceFragment(new HomeFragment(this));
         } else {
             replaceFragment(new LoginFragment(this));
@@ -60,22 +60,22 @@ public class ForumApplication extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.navigation_home) {
-                if(!authService.isLoggedIn()) {
+                if (!authService.isLoggedIn()) {
                     return false;
                 }
                 replaceFragment(new HomeFragment(this));
                 return true;
-            } else if(item.getItemId() == R.id.navigation_account) {
-                if(authService.isLoggedIn()) {
+            } else if (item.getItemId() == R.id.navigation_account) {
+                if (authService.isLoggedIn()) {
                     replaceFragment(new ProfileFragment(this));
                 } else {
                     replaceFragment(new LoginFragment(this));
                 }
                 return true;
-            } else if(item.getItemId() == R.id.navigation_login) {
+            } else if (item.getItemId() == R.id.navigation_login) {
                 replaceFragment(new LoginFragment(this));
                 return true;
-            } else if(item.getItemId() == R.id.navigation_create_thread) {
+            } else if (item.getItemId() == R.id.navigation_create_thread) {
                 return true;
             }
             return false;
@@ -85,29 +85,23 @@ public class ForumApplication extends AppCompatActivity {
     public void refreshNavigationBar() {
         final BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         Menu menu = bottomNavigationView.getMenu();
-        if(authService.isLoggedIn()) {
+        if (authService.isLoggedIn()) {
             menu.findItem(R.id.navigation_home).setVisible(true);
             menu.findItem(R.id.navigation_account).setVisible(true);
             menu.findItem(R.id.navigation_login).setVisible(false);
-
-            //bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         } else {
             menu.findItem(R.id.navigation_home).setVisible(false);
             menu.findItem(R.id.navigation_account).setVisible(false);
             menu.findItem(R.id.navigation_login).setVisible(true);
-
-            //bottomNavigationView.setSelectedItemId(R.id.navigation_login);
         }
 
-        if(getCurrentFragment() instanceof ForumFragment) {
+        if (getCurrentFragment() instanceof ForumFragment
+                && !authService.isAnonymous()
+        ) {
             menu.findItem(R.id.navigation_create_thread).setVisible(true);
-
-            //bottomNavigationView.setSelectedItemId(R.id.navigation_create_thread);
         } else {
-            if(menu.findItem(R.id.navigation_create_thread).isVisible()) {
+            if (menu.findItem(R.id.navigation_create_thread).isVisible()) {
                 menu.findItem(R.id.navigation_create_thread).setVisible(false);
-
-                //bottomNavigationView.setSelectedItemId(R.id.navigation_home);
             }
         }
     }

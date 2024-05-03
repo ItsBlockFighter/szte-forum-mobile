@@ -32,6 +32,10 @@ public class AuthService {
         return auth.getCurrentUser() != null;
     }
 
+    public boolean isAnonymous() {
+        return isLoggedIn() && auth.getCurrentUser().isAnonymous();
+    }
+
     public void logOut() {
         auth.signOut();
     }

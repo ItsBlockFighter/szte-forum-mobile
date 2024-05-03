@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +72,11 @@ public class ThreadFragment extends Fragment {
         title.setText(thread.getTitle());
         author.setText(thread.getAuthorId());
 
+        if(!AuthService.getInstance().isLoggedIn() || AuthService.getInstance().isAnonymous()) {
+            input.setVisibility(View.GONE);
+            send.setVisibility(View.GONE);
+        }
+
         return view;
     }
 
@@ -85,6 +91,9 @@ public class ThreadFragment extends Fragment {
 
     @FieldId("thread_input")
     private EditText input;
+
+    @FieldId("thread_send")
+    private Button send;
 
     @ButtonId("thread_send")
     public void send(View view) {
