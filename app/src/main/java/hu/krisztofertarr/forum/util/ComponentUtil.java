@@ -1,6 +1,7 @@
 package hu.krisztofertarr.forum.util;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.View;
 
 import java.lang.reflect.Field;
@@ -14,12 +15,17 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ComponentUtil {
 
+    private static final String LOG_TAG = "ComponentUtil";
 
     private static final BiFunction<Object, Method, View.OnClickListener> buttonClickListener = (instance, method) -> v -> {
         try {
-            method.invoke(instance, v);
+            if(method.getParameterCount() == 1) {
+                method.invoke(instance, v);
+                return;
+            }
+            method.invoke(instance);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d(LOG_TAG, "Failed to invoke the click listener.", e);
         }
     };
 
@@ -44,7 +50,7 @@ public class ComponentUtil {
                 field.setAccessible(true);
                 field.set(instance, view.findViewById(id));
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                Log.d(LOG_TAG, "Failed to set the field value.", e);
             }
         }
     }
