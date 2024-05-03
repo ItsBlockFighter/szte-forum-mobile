@@ -6,25 +6,29 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
+import hu.krisztofertarr.forum.ForumApplication;
 import hu.krisztofertarr.forum.R;
+import hu.krisztofertarr.forum.model.Forum;
 import hu.krisztofertarr.forum.model.Post;
 import hu.krisztofertarr.forum.model.Thread;
+import hu.krisztofertarr.forum.model.adapter.ForumAdapter;
 import hu.krisztofertarr.forum.model.adapter.PostAdapter;
 import hu.krisztofertarr.forum.service.AuthService;
 import hu.krisztofertarr.forum.service.ForumService;
 import hu.krisztofertarr.forum.util.Callback;
 import hu.krisztofertarr.forum.util.ComponentUtil;
+import hu.krisztofertarr.forum.util.ConditionUtil;
 import hu.krisztofertarr.forum.util.annotation.ButtonId;
 import hu.krisztofertarr.forum.util.annotation.FieldId;
 import lombok.NoArgsConstructor;
@@ -61,20 +65,51 @@ public class ThreadFragment extends Fragment {
 
                     @Override
                     public void onFailure(Exception e) {
-
+                        Toast.makeText(getContext(), "Üzenetek betöltése sikertelen!", Toast.LENGTH_SHORT).show();
                     }
                 });
 
-        adapter = new PostAdapter(getContext(), thread);
+        adapter = new PostAdapter(getContext(), thread,
+                (post, v) -> {
+
+                },
+                (post, v) -> {
+                    // safe check
+                    if (post.getAuthorId().equals(AuthService.getInstance().getUser().getUid())) {
+                        ForumService.getInstance().deletePost(post, new Callback<Void>() {
+                            @Override
+                            public void onSuccess(Void data) {
+                                thread.getPosts().remove(post);
+                                adapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Toast.makeText(getContext(), "Üzenet törlés sikertelen!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+        );
         postsView.setLayoutManager(new LinearLayoutManager(getContext()));
         postsView.setAdapter(adapter);
 
         title.setText(thread.getTitle());
         author.setText(thread.getAuthorId());
 
-        if(!AuthService.getInstance().isLoggedIn() || AuthService.getInstance().isAnonymous()) {
+        if (!AuthService.getInstance().isLoggedIn() || AuthService.getInstance().isAnonymous()) {
             input.setVisibility(View.GONE);
             send.setVisibility(View.GONE);
+        }
+
+        if (thread.isLocked()) {
+            input.setEnabled(false);
+            send.setEnabled(false);
+        }
+
+        if (AuthService.getInstance().isLoggedIn()
+                && AuthService.getInstance().getUser().getUid().equals(thread.getAuthorId())) {
+            delete.setVisibility(View.VISIBLE);
         }
 
         return view;
@@ -95,26 +130,60 @@ public class ThreadFragment extends Fragment {
     @FieldId("thread_send")
     private Button send;
 
+    @FieldId("thread_delete")
+    private ImageView delete;
+
+    @ButtonId("thread_delete")
+    public void delete() {
+        final String forumId = thread.getForumId();
+        ForumService.getInstance().deleteThread(thread, new Callback<Void>() {
+            @Override
+            public void onSuccess(Void data) {
+                ForumService.getInstance().findForumById(forumId, new Callback<Forum>() {
+                    @Override
+                    public void onSuccess(Forum data) {
+                        ForumApplication.getInstance().replaceFragment(
+                                new ForumFragment(ForumApplication.getInstance(), data)
+                        );
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        ForumApplication.getInstance().replaceFragment(
+                                new HomeFragment(ForumApplication.getInstance())
+                        );
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(getContext(), "Sikertelen téma törlés!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     @ButtonId("thread_send")
     public void send(View view) {
         String content = input.getText().toString();
+        ConditionUtil.assertIsNotEmpty(getContext(), content, "Nem küldhetsz üres üzenetet!");
 
-        Post post = new Post(thread.getId(), content, AuthService.getInstance().user().getDisplayName());
+        Post post = new Post(thread.getId(), content, AuthService.getInstance().getUser().getUid());
         ForumService.getInstance()
-                        .addPost(thread, post, new Callback<Post>() {
-                            @Override
-                            public void onSuccess(Post data) {
-                                thread.getPosts().add(data);
-                                adapter.notifyDataSetChanged();
+                .addPost(post, new Callback<Post>() {
+                    @Override
+                    public void onSuccess(Post data) {
+                        thread.getPosts().add(data);
+                        adapter.notifyDataSetChanged();
 
-                                input.clearFocus();
-                                input.setText("");
-                            }
+                        input.clearFocus();
+                        input.setText("");
+                    }
 
-                            @Override
-                            public void onFailure(Exception e) {
-                                Toast.makeText(getContext(), "Failed to send post", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(getContext(), "Sikertelen üzenet küldés!", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

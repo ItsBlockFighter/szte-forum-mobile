@@ -75,8 +75,6 @@ public class ForumApplication extends AppCompatActivity {
             } else if (item.getItemId() == R.id.navigation_login) {
                 replaceFragment(new LoginFragment(this));
                 return true;
-            } else if (item.getItemId() == R.id.navigation_create_thread) {
-                return true;
             }
             return false;
         });

@@ -46,7 +46,7 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ComponentUtil.load(this, view);
 
-        Uri avatar = AuthService.getInstance().user().getPhotoUrl();
+        Uri avatar = AuthService.getInstance().getUser().getPhotoUrl();
         if(avatar != null) {
             Glide.with(this).load(avatar).into(profileImage);
         }

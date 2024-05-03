@@ -1,5 +1,9 @@
 package hu.krisztofertarr.forum.service;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -206,6 +210,44 @@ public class ForumService {
                 });
     }
 
+    public void createThread(Thread thread, Post post, Callback<Thread> callback) {
+        database.collection("threads")
+                .add(thread)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        thread.setId(task.getResult().getId());
+                        post.setThreadId(thread.getId());
+
+                        addPost(post, new Callback<Post>() {
+                            @Override
+                            public void onSuccess(Post data) {
+                                callback.onSuccess(thread);
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                callback.onFailure(e);
+                            }
+                        });
+                    } else {
+                        callback.onFailure(task.getException());
+                    }
+                });
+    }
+
+    public void deleteThread(Thread thread, Callback<Void> callback) {
+        database.collection("threads")
+                .document(thread.getId())
+                .delete()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        callback.onSuccess(null);
+                    } else {
+                        callback.onFailure(task.getException());
+                    }
+                });
+    }
+
     public void findPostsByThread(String threadId, Callback<List<Post>> callback) {
         database.collection("posts")
                 .whereEqualTo("threadId", threadId)
@@ -221,12 +263,41 @@ public class ForumService {
                 });
     }
 
-    public void addPost(Thread thread, Post post, Callback<Post> callback) {
+    public void addPost(Post post, Callback<Post> callback) {
         database.collection("posts")
                 .add(post)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        post.setId(task.getResult().getId());
+
                         callback.onSuccess(post);
+                    } else {
+                        callback.onFailure(task.getException());
+                    }
+                });
+    }
+
+    public void editPost(Post post, Callback<Void> callback) {
+        database.collection("posts")
+                .document(post.getId())
+                .set(post)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        callback.onSuccess(null);
+                    } else {
+                        callback.onFailure(task.getException());
+                    }
+                });
+
+    }
+
+    public void deletePost(Post post, Callback<Void> callback) {
+        database.collection("posts")
+                .document(post.getId())
+                .delete()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        callback.onSuccess(null);
                     } else {
                         callback.onFailure(task.getException());
                     }

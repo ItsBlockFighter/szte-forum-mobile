@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.ThreadCreateFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        >
+
+        <!-- Thread Title Input -->
+        <EditText
+            android:id="@+id/thread_create_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"
+            android:inputType="textShortMessage"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="18dp"
+            android:layout_marginBottom="15dp"/>
+
+        <!-- Thread Content (First post) Input -->
+        <EditText
+            android:id="@+id/thread_create_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Content"
+            android:inputType="textMultiLine"
+            android:layout_below="@id/thread_create_title"
+            android:paddingBottom="45dp" />
+
+        <!-- Create Button -->
+        <Button
+            android:id="@+id/thread_create_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/thread_create_content"
+            android:layout_marginBottom="5dp"
+            android:text="Létrehozás" />
+
+        <!-- Cancel Button -->
+        <Button
+            android:id="@+id/thread_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/thread_create_button"
+            android:layout_marginBottom="5dp"
+            android:text="Mégse" />
+    </RelativeLayout>
+
+</FrameLayout>

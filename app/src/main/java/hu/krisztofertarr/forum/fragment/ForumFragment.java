@@ -3,9 +3,11 @@ package hu.krisztofertarr.forum.fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -113,6 +115,17 @@ public class ForumFragment extends Fragment {
     public void onResume() {
         super.onResume();
         application.refreshNavigationBar();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.navigation_create_thread) {
+            application.replaceFragment(
+                    new ThreadCreateFragment(forum)
+            );
+            return true;
+        }
+        return false;
     }
 
     @FieldId("forum_title")

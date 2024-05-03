@@ -30,7 +30,6 @@ public class RegisterFragment extends Fragment {
     private AuthService authService;
 
     public RegisterFragment(ForumApplication application) {
-        this();
         this.application = application;
     }
 
@@ -64,10 +63,9 @@ public class RegisterFragment extends Fragment {
 
     @ButtonId("register")
     public void register(View view) {
-        Log.d("RegisterFragment", "register: Registering new user");
-        ConditionUtil.assertIsNotEmpty(usernameField.getText().toString(), "Username field is null");
-        ConditionUtil.assertIsNotEmpty(passwordField.getText().toString(), "Password field is null");
-        ConditionUtil.assertIsNotEmpty(emailField.getText().toString(), "Email field is null");
+        ConditionUtil.assertIsNotEmpty(getContext(), usernameField.getText().toString(), "Kérlek adj meg egy felhasználónevet!");
+        ConditionUtil.assertIsNotEmpty(getContext(), passwordField.getText().toString(), "Kérlek adj meg egy jelszót!");
+        ConditionUtil.assertIsNotEmpty(getContext(), emailField.getText().toString(), "Kérlek adj meg egy e-mailt!");
 
         authService.register(emailField.getText().toString(), passwordField.getText().toString())
                 .addOnCompleteListener(task -> {
@@ -75,18 +73,18 @@ public class RegisterFragment extends Fragment {
                         authService.updateUsername(usernameField.getText().toString(), new Callback<Void>() {
                             @Override
                             public void onSuccess(Void data) {
-                                Toast.makeText(getContext(), "Registration successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Regisztráció sikeres!", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onFailure(Exception e) {
-                                Toast.makeText(getContext(), "Registration failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Nem sikerült a regisztráció!", Toast.LENGTH_SHORT).show();
                             }
                         });
 
                         application.replaceFragment(new LoginFragment(application));
                     } else {
-                        Toast.makeText(getContext(), "Registration failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Nem sikerült a regisztráció!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

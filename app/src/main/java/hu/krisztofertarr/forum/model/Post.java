@@ -34,4 +34,10 @@ public class Post {
         this.content = content;
         this.authorId = authorId;
     }
+
+    public Post(String content, String authorId) {
+        this();
+        this.content = content;
+        this.authorId = authorId;
+    }
 }

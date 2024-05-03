@@ -58,15 +58,15 @@ public class LoginFragment extends Fragment {
 
     @ButtonId("login")
     public void login(View view) {
-        ConditionUtil.assertIsNotEmpty(emailField.getText().toString(), "Email field is null");
-        ConditionUtil.assertIsNotEmpty(passwordField.getText().toString(), "Password field is null");
+        ConditionUtil.assertIsNotEmpty(getContext(), emailField.getText().toString(), "Kérlek adj meg egy e-mailt!");
+        ConditionUtil.assertIsNotEmpty(getContext(), passwordField.getText().toString(), "Kérlek adj meg egy jelszót!");
 
         authService.login(emailField.getText().toString(), passwordField.getText().toString())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         application.replaceFragment(new HomeFragment(application));
                     } else {
-                        Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Sikertelen bejelentkezés!", Toast.LENGTH_SHORT).show();
                     }
                     application.refreshNavigationBar();
                 });
@@ -84,7 +84,7 @@ public class LoginFragment extends Fragment {
                     if (task.isSuccessful()) {
                         application.replaceFragment(new HomeFragment(application));
                     } else {
-                        Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Sikertelen bejelentkezés!", Toast.LENGTH_SHORT).show();
                     }
                     application.refreshNavigationBar();
                 });
