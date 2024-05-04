@@ -1,9 +1,6 @@
 package hu.krisztofertarr.forum.service;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -240,8 +237,17 @@ public class ForumService {
                 .document(thread.getId())
                 .delete()
                 .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()) {
+                    if (task.isSuccessful()) {
                         callback.onSuccess(null);
+
+                        database.collection("posts")
+                                .whereEqualTo("threadId", thread.getId())
+                                .get()
+                                .addOnSuccessListener(result -> {
+                                    for (DocumentSnapshot snapshots : result.getDocuments()) {
+                                        snapshots.getReference().delete();
+                                    }
+                                });
                     } else {
                         callback.onFailure(task.getException());
                     }
@@ -277,7 +283,7 @@ public class ForumService {
                 });
     }
 
-    public void editPost(Post post, Callback<Void> callback) {
+    public void savePost(Post post, Callback<Void> callback) {
         database.collection("posts")
                 .document(post.getId())
                 .set(post)

@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hu.krisztofertarr.forum.ForumApplication;
@@ -23,13 +26,13 @@ import hu.krisztofertarr.forum.model.Thread;
 import hu.krisztofertarr.forum.model.adapter.ForumAdapter;
 import hu.krisztofertarr.forum.model.adapter.ThreadAdapter;
 import hu.krisztofertarr.forum.service.ForumService;
+import hu.krisztofertarr.forum.service.NotificationService;
 import hu.krisztofertarr.forum.util.Callback;
 import hu.krisztofertarr.forum.util.ComponentUtil;
 import hu.krisztofertarr.forum.util.annotation.FieldId;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-public class ForumFragment extends Fragment {
+public class ForumFragment extends Fragment implements NavigationBarView.OnItemSelectedListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,50 +40,60 @@ public class ForumFragment extends Fragment {
     }
 
 
-    private ForumApplication application;
+    private final ForumApplication application;
     private Forum forum;
 
 
     private ForumAdapter forumAdapter;
     private ThreadAdapter threadAdapter;
 
-    public ForumFragment(ForumApplication application, Forum forum) {
-        this.application = application;
+    public ForumFragment() {
+        this.application = ForumApplication.getInstance();
+    }
+
+    public ForumFragment(Forum forum) {
+        this();
         this.forum = forum;
     }
+
+    private List<Forum> subForums = new ArrayList<>();
+    private List<Thread> threads = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_forum, container, false);
+        return inflater.inflate(R.layout.fragment_forum, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         ComponentUtil.load(this, view);
 
         this.title.setText(forum.getName());
         this.description.setText(forum.getDescription());
 
-        final List<Forum> _subForums = forum.getSubForums();
-
-        this.forumAdapter = new ForumAdapter(getContext(), _subForums, (value, v) -> {
-            application.replaceFragment(new ForumFragment(application, value));
+        this.forumAdapter = new ForumAdapter(getContext(), subForums, (value, v) -> {
+            application.replaceFragment(new ForumFragment(value));
         });
 
-        this.subForums.setLayoutManager(new LinearLayoutManager(getContext()));
-        this.subForums.setAdapter(forumAdapter);
+        this.subForumsView.setLayoutManager(new LinearLayoutManager(getContext()));
+        this.subForumsView.setAdapter(forumAdapter);
 
-        final List<Thread> _threads = forum.getThreads();
-
-        this.threadAdapter = new ThreadAdapter(getContext(), _threads, (value, v) -> {
+        this.threadAdapter = new ThreadAdapter(getContext(), threads, (value, v) -> {
             application.replaceFragment(new ThreadFragment(value));
         });
 
-        this.threads.setLayoutManager(new LinearLayoutManager(getContext()));
-        this.threads.setAdapter(threadAdapter);
+        this.threadsView.setLayoutManager(new LinearLayoutManager(getContext()));
+        this.threadsView.setAdapter(threadAdapter);
 
         ForumService.getInstance()
                 .findSubForumsByForum(forum.getId(), new Callback<List<Forum>>() {
                     @Override
                     public void onSuccess(List<Forum> data) {
-                        _subForums.addAll(data);
+                        subForums.clear();
+                        subForums.addAll(data);
                         forumAdapter.notifyDataSetChanged();
 
                         view.findViewById(R.id.divider).setVisibility(forum.getSubForums().isEmpty() ? View.GONE : View.VISIBLE);
@@ -96,7 +109,8 @@ public class ForumFragment extends Fragment {
                 .findThreadsByForum(forum.getId(), new Callback<List<Thread>>() {
                     @Override
                     public void onSuccess(List<Thread> data) {
-                        _threads.addAll(data);
+                        threads.clear();
+                        threads.addAll(data);
                         threadAdapter.notifyDataSetChanged();
 
                         view.findViewById(R.id.divider2).setVisibility(forum.getThreads().isEmpty() ? View.GONE : View.VISIBLE);
@@ -107,25 +121,12 @@ public class ForumFragment extends Fragment {
                         view.findViewById(R.id.divider2).setVisibility(forum.getThreads().isEmpty() ? View.GONE : View.VISIBLE);
                     }
                 });
-
-        return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
         application.refreshNavigationBar();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.navigation_create_thread) {
-            application.replaceFragment(
-                    new ThreadCreateFragment(forum)
-            );
-            return true;
-        }
-        return false;
     }
 
     @FieldId("forum_title")
@@ -135,12 +136,19 @@ public class ForumFragment extends Fragment {
     private MaterialTextView description;
 
     @FieldId("forum_subforums")
-    private RecyclerView subForums;
+    private RecyclerView subForumsView;
 
     @FieldId("forum_threads")
-    private RecyclerView threads;
+    private RecyclerView threadsView;
 
-    public void newThread(View view) {
-        // TODO
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.navigation_create_thread) {
+            application.replaceFragment(
+                    new ThreadCreateFragment(forum)
+            );
+            return true;
+        }
+        return false;
     }
 }

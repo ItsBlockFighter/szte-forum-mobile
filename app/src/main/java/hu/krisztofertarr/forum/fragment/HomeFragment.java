@@ -2,6 +2,8 @@ package hu.krisztofertarr.forum.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,18 +25,18 @@ import hu.krisztofertarr.forum.model.Category;
 import hu.krisztofertarr.forum.model.Forum;
 import hu.krisztofertarr.forum.model.adapter.CategoryAdapter;
 import hu.krisztofertarr.forum.service.ForumService;
+import hu.krisztofertarr.forum.service.NotificationService;
 import hu.krisztofertarr.forum.util.Callback;
 import hu.krisztofertarr.forum.util.ComponentUtil;
 import hu.krisztofertarr.forum.util.annotation.FieldId;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 public class HomeFragment extends Fragment {
 
-    private ForumApplication application;
+    private final ForumApplication application;
 
-    public HomeFragment(ForumApplication application) {
-        this.application = application;
+    public HomeFragment() {
+        this.application = ForumApplication.getInstance();
     }
 
     @Override
@@ -47,7 +49,13 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         ComponentUtil.load(this, view);
 
         List<Category> categories = new ArrayList<>();
@@ -86,12 +94,11 @@ public class HomeFragment extends Fragment {
                 });
 
         this.adapter = new CategoryAdapter(getContext(), categories, (value, v) -> {
-            application.replaceFragment(new ForumFragment(application, value));
+            NotificationService.notify(getContext(), "Selected category: " + value.getName());
+            application.replaceFragment(new ForumFragment(value));
         });
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         this.recyclerView.setAdapter(adapter);
-
-        return view;
     }
 
     @Override

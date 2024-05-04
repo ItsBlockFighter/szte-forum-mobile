@@ -13,6 +13,8 @@ import java.util.List;
 
 import hu.krisztofertarr.forum.R;
 import hu.krisztofertarr.forum.model.Thread;
+import hu.krisztofertarr.forum.service.AuthService;
+import hu.krisztofertarr.forum.util.Callback;
 
 public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder> {
 
@@ -54,16 +56,35 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
         private final TextView title;
         private final TextView author;
+        private final TextView stats;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.title = itemView.findViewById(R.id.thread_title);
             this.author = itemView.findViewById(R.id.thread_author);
+            this.stats = itemView.findViewById(R.id.thread_comments);
         }
 
         public void bindTo(Thread thread, ClickListener<Thread> clickListener) {
             this.title.setText(thread.getTitle());
-            this.author.setText(thread.getAuthorId());
+            this.author.setText("...");
+            this.stats.setText("Comments: " + thread.getPosts().size());
+
+            AuthService.getInstance().getUsernameByUserId(
+                    thread.getAuthorId(),
+                    new Callback<String>() {
+                        @Override
+                        public void onSuccess(String data) {
+                            author.setText(data);
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+                            author.setText("Error");
+                        }
+                    }
+            );
+
             this.itemView.setOnClickListener(v -> clickListener.onClick(thread, v));
         }
     }

@@ -70,17 +70,33 @@
             android:layout_toEndOf="@id/tv_user_img"
             android:background="@color/black" />
 
-        <TextView
+        <EditText
             android:id="@+id/tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_user_img"
-            android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
+            android:layout_alignStart="@id/tv_user_img"
+            android:layout_toStartOf="@id/tv_post_save"
+            android:autofillHints="content"
             android:inputType="textMultiLine"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            android:focusable="false"
+            android:longClickable="false"
+            android:background="@android:color/transparent"
+            android:text="alma"
             android:textSize="16sp" />
+
+        <!-- save buttton -->
+        <Button
+            android:id="@+id/tv_post_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/tv_user_img"
+            android:layout_alignTop="@id/tv_content"
+            android:visibility="gone"
+            android:text="Mentés" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

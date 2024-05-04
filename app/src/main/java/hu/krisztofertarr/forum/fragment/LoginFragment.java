@@ -2,6 +2,8 @@ package hu.krisztofertarr.forum.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -41,13 +43,17 @@ public class LoginFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.fragment_login, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         ComponentUtil.load(this, view);
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
         view.startAnimation(animation);
-
-        return view;
     }
 
     @FieldId("email")
@@ -64,7 +70,7 @@ public class LoginFragment extends Fragment {
         authService.login(emailField.getText().toString(), passwordField.getText().toString())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        application.replaceFragment(new HomeFragment(application));
+                        application.replaceFragment(new HomeFragment());
                     } else {
                         Toast.makeText(getContext(), "Sikertelen bejelentkezés!", Toast.LENGTH_SHORT).show();
                     }
@@ -74,7 +80,7 @@ public class LoginFragment extends Fragment {
 
     @ButtonId("register")
     public void register(View view) {
-        application.replaceFragment(new RegisterFragment(application));
+        application.replaceFragment(new RegisterFragment());
     }
 
     @ButtonId("gust_login")
@@ -82,7 +88,7 @@ public class LoginFragment extends Fragment {
         authService.loginGuest()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        application.replaceFragment(new HomeFragment(application));
+                        application.replaceFragment(new HomeFragment());
                     } else {
                         Toast.makeText(getContext(), "Sikertelen bejelentkezés!", Toast.LENGTH_SHORT).show();
                     }

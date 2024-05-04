@@ -2,10 +2,12 @@ package hu.krisztofertarr.forum.fragment;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -20,19 +22,19 @@ import com.bumptech.glide.Glide;
 import hu.krisztofertarr.forum.ForumApplication;
 import hu.krisztofertarr.forum.R;
 import hu.krisztofertarr.forum.service.AuthService;
+import hu.krisztofertarr.forum.service.AvatarService;
 import hu.krisztofertarr.forum.util.Callback;
 import hu.krisztofertarr.forum.util.ComponentUtil;
 import hu.krisztofertarr.forum.util.annotation.ButtonId;
 import hu.krisztofertarr.forum.util.annotation.FieldId;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 public class ProfileFragment extends Fragment {
 
-    private ForumApplication application;
+    private final ForumApplication application;
 
-    public ProfileFragment(ForumApplication application) {
-        this.application = application;
+    public ProfileFragment() {
+        this.application = ForumApplication.getInstance();
     }
 
     @Override
@@ -43,15 +45,19 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         ComponentUtil.load(this, view);
 
         Uri avatar = AuthService.getInstance().getUser().getPhotoUrl();
-        if(avatar != null) {
-            Glide.with(this).load(avatar).into(profileImage);
+        if (avatar != null) {
+            updatePicture(avatar);
         }
-
-        return view;
     }
 
     @FieldId("profile_image")
@@ -66,33 +72,41 @@ public class ProfileFragment extends Fragment {
 
     @ButtonId("profile_image_upload")
     public void uploadImage(View view) {
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), 200);
+    }
+
+    private void updatePicture(Uri uri) {
+        Glide.with(this).load(uri).into(profileImage);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK && requestCode == 200) {
+        if (resultCode == RESULT_OK && requestCode == 200) {
             Uri selectedImage = data.getData();
-            if(selectedImage != null) {
+            if (selectedImage != null) {
                 profileImage.setImageURI(selectedImage);
 
-                AuthService.getInstance().updateAvatar(selectedImage, new Callback<Void>() {
-                    @Override
-                    public void onSuccess(Void data) {
-                        Toast.makeText(getContext(), "Avatar uploaded", Toast.LENGTH_SHORT).show();
-                    }
+                AvatarService.getInstance().uploadAvatar(
+                        AuthService.getInstance().getUser().getUid(), selectedImage, new Callback<Uri>() {
+                            @Override
+                            public void onSuccess(Uri data) {
+                                Toast.makeText(getContext(), "Avatar uploaded", Toast.LENGTH_SHORT).show();
 
-                    @Override
-                    public void onFailure(Exception e) {
-                        Toast.makeText(getContext(), "Failed to upload avatar", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                updatePicture(data);
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Toast.makeText(getContext(), "Failed to upload avatar", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
             }
         }
     }

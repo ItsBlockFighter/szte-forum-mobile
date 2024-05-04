@@ -1,22 +1,22 @@
 package hu.krisztofertarr.forum;
 
-import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.appcheck.FirebaseAppCheck;
-import com.google.firebase.appcheck.internal.DefaultFirebaseAppCheck;
 
 import hu.krisztofertarr.forum.databinding.ActivityMainBinding;
 import hu.krisztofertarr.forum.fragment.ForumFragment;
@@ -24,10 +24,16 @@ import hu.krisztofertarr.forum.fragment.HomeFragment;
 import hu.krisztofertarr.forum.fragment.LoginFragment;
 import hu.krisztofertarr.forum.fragment.ProfileFragment;
 import hu.krisztofertarr.forum.service.AuthService;
+import hu.krisztofertarr.forum.service.NotificationService;
+import hu.krisztofertarr.forum.util.PermissionUtil;
 import lombok.Getter;
+
+import android.Manifest;
 
 @Getter
 public class ForumApplication extends AppCompatActivity {
+
+    private static final String LOG_TAG = ForumApplication.class.getName();
 
     @Getter
     private static ForumApplication instance;
@@ -41,6 +47,8 @@ public class ForumApplication extends AppCompatActivity {
 
         instance = this;
 
+        requestPermissions();
+
         // Firebase SafetyNet
         FirebaseApp.initializeApp(this);
 
@@ -50,7 +58,7 @@ public class ForumApplication extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         if (authService.isLoggedIn()) {
-            replaceFragment(new HomeFragment(this));
+            replaceFragment(new HomeFragment());
         } else {
             replaceFragment(new LoginFragment(this));
         }
@@ -63,11 +71,11 @@ public class ForumApplication extends AppCompatActivity {
                 if (!authService.isLoggedIn()) {
                     return false;
                 }
-                replaceFragment(new HomeFragment(this));
+                replaceFragment(new HomeFragment());
                 return true;
             } else if (item.getItemId() == R.id.navigation_account) {
                 if (authService.isLoggedIn()) {
-                    replaceFragment(new ProfileFragment(this));
+                    replaceFragment(new ProfileFragment());
                 } else {
                     replaceFragment(new LoginFragment(this));
                 }
@@ -75,6 +83,9 @@ public class ForumApplication extends AppCompatActivity {
             } else if (item.getItemId() == R.id.navigation_login) {
                 replaceFragment(new LoginFragment(this));
                 return true;
+            }
+            if (getCurrentFragment() instanceof NavigationBarView.OnItemSelectedListener) {
+                return ((NavigationBarView.OnItemSelectedListener) getCurrentFragment()).onNavigationItemSelected(item);
             }
             return false;
         });
@@ -113,5 +124,25 @@ public class ForumApplication extends AppCompatActivity {
 
     public Fragment getCurrentFragment() {
         return getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+    }
+
+    public void requestPermissions() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            return;
+        }
+        PermissionUtil.checkAndRequestPermissions(this,
+                Manifest.permission.INTERNET,
+                Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED,
+                Manifest.permission.READ_MEDIA_IMAGES,
+                Manifest.permission.MANAGE_DOCUMENTS,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.POST_NOTIFICATIONS
+        );
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionUtil.onRequestPermissionsResult(this, requestCode, permissions, grantResults, null);
     }
 }

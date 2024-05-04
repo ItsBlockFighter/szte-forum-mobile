@@ -2,8 +2,11 @@ package hu.krisztofertarr.forum.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +44,14 @@ public class ThreadCreateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_thread_create, container, false);
+        return inflater.inflate(R.layout.fragment_thread_create, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         ComponentUtil.load(this, view);
-        return view;
     }
 
     @FieldId("thread_create_title")
@@ -79,6 +87,7 @@ public class ThreadCreateFragment extends Fragment {
 
             @Override
             public void onFailure(Exception e) {
+                Log.e("ThreadCreateFragment", "Failed to create thread", e);
                 Toast.makeText(getContext(), "Nem sikerült létrehozni a témát!", Toast.LENGTH_LONG).show();
             }
         });
@@ -87,7 +96,7 @@ public class ThreadCreateFragment extends Fragment {
     @ButtonId("thread_cancel_button")
     public void cancel() {
         ForumApplication.getInstance().replaceFragment(
-                new ForumFragment(ForumApplication.getInstance(), forum)
+                new ForumFragment(forum)
         );
     }
 }

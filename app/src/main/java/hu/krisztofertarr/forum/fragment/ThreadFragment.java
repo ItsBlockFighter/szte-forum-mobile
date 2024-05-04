@@ -2,6 +2,8 @@ package hu.krisztofertarr.forum.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,7 +54,13 @@ public class ThreadFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_thread, container, false);
+        return inflater.inflate(R.layout.fragment_thread, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         ComponentUtil.load(this, view);
 
         ForumService.getInstance()
@@ -71,7 +79,23 @@ public class ThreadFragment extends Fragment {
 
         adapter = new PostAdapter(getContext(), thread,
                 (post, v) -> {
+                    if (post.getAuthorId().equals(AuthService.getInstance().getUser().getUid())) {
+                        final String content = ((EditText) v.findViewById(R.id.tv_content)).getText().toString();
+                        ConditionUtil.assertIsNotEmpty(getContext(), content, "Nem küldhetsz üres üzenetet!");
 
+                        post.setContent(content);
+                        ForumService.getInstance().savePost(post, new Callback<Void>() {
+                            @Override
+                            public void onSuccess(Void data) {
+                                //adapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Toast.makeText(getContext(), "Üzenet mentése sikertelen!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 },
                 (post, v) -> {
                     // safe check
@@ -95,7 +119,22 @@ public class ThreadFragment extends Fragment {
         postsView.setAdapter(adapter);
 
         title.setText(thread.getTitle());
-        author.setText(thread.getAuthorId());
+        author.setText("...");
+
+        AuthService.getInstance().getUsernameByUserId(
+                thread.getAuthorId(),
+                new Callback<String>() {
+                    @Override
+                    public void onSuccess(String data) {
+                        author.setText(data);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        author.setText("Error");
+                    }
+                }
+        );
 
         if (!AuthService.getInstance().isLoggedIn() || AuthService.getInstance().isAnonymous()) {
             input.setVisibility(View.GONE);
@@ -105,14 +144,12 @@ public class ThreadFragment extends Fragment {
         if (thread.isLocked()) {
             input.setEnabled(false);
             send.setEnabled(false);
+        } else {
+            if (AuthService.getInstance().isLoggedIn()
+                    && AuthService.getInstance().getUser().getUid().equals(thread.getAuthorId())) {
+                delete.setVisibility(View.VISIBLE);
+            }
         }
-
-        if (AuthService.getInstance().isLoggedIn()
-                && AuthService.getInstance().getUser().getUid().equals(thread.getAuthorId())) {
-            delete.setVisibility(View.VISIBLE);
-        }
-
-        return view;
     }
 
     @FieldId("thread_posts")
@@ -143,14 +180,14 @@ public class ThreadFragment extends Fragment {
                     @Override
                     public void onSuccess(Forum data) {
                         ForumApplication.getInstance().replaceFragment(
-                                new ForumFragment(ForumApplication.getInstance(), data)
+                                new ForumFragment(data)
                         );
                     }
 
                     @Override
                     public void onFailure(Exception e) {
                         ForumApplication.getInstance().replaceFragment(
-                                new HomeFragment(ForumApplication.getInstance())
+                                new HomeFragment()
                         );
                     }
                 });

@@ -2,6 +2,8 @@ package hu.krisztofertarr.forum.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -23,14 +25,13 @@ import hu.krisztofertarr.forum.util.annotation.ButtonId;
 import hu.krisztofertarr.forum.util.annotation.FieldId;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 public class RegisterFragment extends Fragment {
 
-    private ForumApplication application;
+    private final ForumApplication application;
     private AuthService authService;
 
-    public RegisterFragment(ForumApplication application) {
-        this.application = application;
+    public RegisterFragment() {
+        this.application = ForumApplication.getInstance();
     }
 
     @Override
@@ -43,13 +44,17 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register, container, false);
+        return inflater.inflate(R.layout.fragment_register, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         ComponentUtil.load(this, view);
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
         view.startAnimation(animation);
-
-        return view;
     }
 
     @FieldId("username")
@@ -67,20 +72,10 @@ public class RegisterFragment extends Fragment {
         ConditionUtil.assertIsNotEmpty(getContext(), passwordField.getText().toString(), "Kérlek adj meg egy jelszót!");
         ConditionUtil.assertIsNotEmpty(getContext(), emailField.getText().toString(), "Kérlek adj meg egy e-mailt!");
 
-        authService.register(emailField.getText().toString(), passwordField.getText().toString())
+        authService.register(emailField.getText().toString(), usernameField.getText().toString(), passwordField.getText().toString())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        authService.updateUsername(usernameField.getText().toString(), new Callback<Void>() {
-                            @Override
-                            public void onSuccess(Void data) {
-                                Toast.makeText(getContext(), "Regisztráció sikeres!", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onFailure(Exception e) {
-                                Toast.makeText(getContext(), "Nem sikerült a regisztráció!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        Toast.makeText(getContext(), "Regisztráció sikeres!", Toast.LENGTH_SHORT).show();
 
                         application.replaceFragment(new LoginFragment(application));
                     } else {
