@@ -25,6 +25,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private final List<Category> categories;
     private ClickListener<Forum> forumClickListener;
 
+    private int lastPosition = -1;
+
     public CategoryAdapter(Context context, List<Category> categories) {
         this.context = context;
         this.categories = categories;
@@ -45,8 +47,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Category category = categories.get(position);
-        if (category != null)
+        if (category != null) {
             holder.bindTo(category);
+
+            if(holder.getAdapterPosition() > lastPosition) {
+                holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in));
+                lastPosition = holder.getAdapterPosition();
+            }
+        }
     }
 
     @Override

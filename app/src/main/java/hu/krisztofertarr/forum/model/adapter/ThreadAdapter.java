@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
     private final Context context;
     private final List<Thread> threads;
     private ClickListener<Thread> clickListener;
+
+    private int lastPosition = -1;
 
     public ThreadAdapter(Context context, List<Thread> threads, ClickListener<Thread> clickListener) {
         this.context = context;
@@ -43,8 +46,14 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Thread thread = threads.get(position);
-        if (thread != null)
+        if (thread != null) {
             holder.bindTo(thread, clickListener);
+
+            if(holder.getAdapterPosition() > lastPosition) {
+                holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_left));
+                lastPosition = holder.getAdapterPosition();
+            }
+        }
     }
 
     @Override

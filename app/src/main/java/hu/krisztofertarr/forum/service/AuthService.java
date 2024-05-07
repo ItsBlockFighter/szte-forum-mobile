@@ -1,18 +1,19 @@
 package hu.krisztofertarr.forum.service;
 
-import android.net.Uri;
-
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
+import hu.krisztofertarr.forum.R;
 import hu.krisztofertarr.forum.model.User;
 import hu.krisztofertarr.forum.util.Callback;
 
@@ -95,19 +96,6 @@ public class AuthService {
                 });
     }
 
-    /*public void updateAvatar(Uri uri, Callback<Void> callback) {
-        getUser().updateProfile(new UserProfileChangeRequest.Builder()
-                        .setPhotoUri(uri)
-                        .build())
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        callback.onSuccess(null);
-                    } else {
-                        callback.onFailure(task.getException());
-                    }
-                });
-    }*/
-
     private final Map<String, String> usernameCache = new ConcurrentHashMap<>();
 
     public void getUsernameByUserId(String userId, Callback<String> callback) {
@@ -129,5 +117,8 @@ public class AuthService {
                     callback.onSuccess(username);
                 })
                 .addOnFailureListener(callback::onFailure);
+    }
+
+    public void loginWithGoogle() {
     }
 }

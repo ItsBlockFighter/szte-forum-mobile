@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +30,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private ClickListener<Post> editListener;
     private ClickListener<Post> deleteListener;
 
+    private int lastPosition = -1;
+
     public PostAdapter(Context context, Thread thread, ClickListener<Post> editListener, ClickListener<Post> deleteListener) {
         this(context, thread);
         this.editListener = editListener;
@@ -50,8 +53,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post post = thread.getPosts().get(position);
-        if (post != null)
+        if (post != null) {
             holder.bindTo(post, editListener, deleteListener);
+
+            if(holder.getAdapterPosition() > lastPosition) {
+                holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_up));
+                lastPosition = holder.getAdapterPosition();
+            }
+        }
     }
 
     @Override

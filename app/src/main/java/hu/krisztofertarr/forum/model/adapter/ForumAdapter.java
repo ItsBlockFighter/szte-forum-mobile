@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,8 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
     private final Context context;
     private final List<Forum> forums;
     private ClickListener<Forum> clickListener;
+
+    private int lastPosition = -1;
 
     public ForumAdapter(Context context, List<Forum> forums, ClickListener<Forum> clickListener) {
         this.context = context;
@@ -42,8 +45,14 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Forum forum = forums.get(position);
-        if (forum != null)
+        if (forum != null) {
             holder.bindTo(forum, clickListener);
+
+            if(holder.getAdapterPosition() > lastPosition) {
+                holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_left));
+                lastPosition = holder.getAdapterPosition();
+            }
+        }
     }
 
     @Override

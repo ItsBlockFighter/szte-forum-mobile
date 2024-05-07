@@ -53,7 +53,7 @@ public class RegisterFragment extends Fragment {
 
         ComponentUtil.load(this, view);
 
-        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         view.startAnimation(animation);
     }
 
@@ -77,7 +77,7 @@ public class RegisterFragment extends Fragment {
                     if (task.isSuccessful()) {
                         Toast.makeText(getContext(), "Regisztráció sikeres!", Toast.LENGTH_SHORT).show();
 
-                        application.replaceFragment(new LoginFragment(application));
+                        application.replaceFragment(new LoginFragment());
                     } else {
                         Toast.makeText(getContext(), "Nem sikerült a regisztráció!", Toast.LENGTH_SHORT).show();
                     }
@@ -86,6 +86,6 @@ public class RegisterFragment extends Fragment {
 
     @ButtonId("back_to_login")
     public void backToLogin(View view) {
-        application.replaceFragment(new LoginFragment(application));
+        application.replaceFragment(new LoginFragment());
     }
 }

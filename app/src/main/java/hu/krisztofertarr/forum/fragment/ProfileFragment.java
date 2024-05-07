@@ -67,7 +67,7 @@ public class ProfileFragment extends Fragment {
     public void logout(View view) {
         AuthService.getInstance().logOut();
         application.refreshNavigationBar();
-        application.replaceFragment(new LoginFragment(application));
+        application.replaceFragment(new LoginFragment());
     }
 
     @ButtonId("profile_image_upload")
