@@ -218,7 +218,7 @@ public class ForumService {
                                     if (task.isSuccessful()) {
                                         return task.getResult().toObjects(Thread.class);
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return null;
                                 })
                 )
                 .callback(callback)
@@ -235,7 +235,7 @@ public class ForumService {
                                     if (task.isSuccessful()) {
                                         return task.getResult().toObject(Thread.class);
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return null;
                                 })
                 )
                 .callback(callback)
@@ -243,29 +243,6 @@ public class ForumService {
     }
 
     public void createThread(Thread thread, Post post, Callback<Thread> callback) {
-        /*database.collection("threads")
-                .add(thread)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        thread.setId(task.getResult().getId());
-                        post.setThreadId(thread.getId());
-
-                        addPost(post, new Callback<Post>() {
-                            @Override
-                            public void onSuccess(Post data) {
-                                callback.onSuccess(thread);
-                            }
-
-                            @Override
-                            public void onFailure(Exception e) {
-                                callback.onFailure(e);
-                            }
-                        });
-                    } else {
-                        callback.onFailure(task.getException());
-                    }
-                });*/
-
         CustomTask.<Thread>builder()
                 .backgroundTask(() ->
                         database.collection("threads")
@@ -277,7 +254,7 @@ public class ForumService {
 
                                         return post;
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return null;
                                 })
                                 .continueWithTask(task ->
                                         database.collection("posts")
@@ -286,7 +263,7 @@ public class ForumService {
                                                     if (postTask.isSuccessful()) {
                                                         return thread;
                                                     }
-                                                    throw new RuntimeException(postTask.getException());
+                                                    return null;
                                                 })
                                 )
                 )
@@ -295,26 +272,6 @@ public class ForumService {
     }
 
     public void deleteThread(Thread thread, Callback<Void> callback) {
-        /*database.collection("threads")
-                .document(thread.getId())
-                .delete()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        callback.onSuccess(null);
-
-                        database.collection("posts")
-                                .whereEqualTo("threadId", thread.getId())
-                                .get()
-                                .addOnSuccessListener(result -> {
-                                    for (DocumentSnapshot snapshots : result.getDocuments()) {
-                                        snapshots.getReference().delete();
-                                    }
-                                });
-                    } else {
-                        callback.onFailure(task.getException());
-                    }
-                });*/
-
         CustomTask.<Void>builder()
                 .backgroundTask(() ->
                         database.collection("threads")
@@ -324,7 +281,7 @@ public class ForumService {
                                     if (task.isSuccessful()) {
                                         return null;
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return null;
                                 })
                                 .continueWithTask(task ->
                                         database.collection("posts")
@@ -337,7 +294,7 @@ public class ForumService {
                                                         }
                                                         return null;
                                                     }
-                                                    throw new RuntimeException(postsTask.getException());
+                                                    return null;
                                                 })
                                 )
                 )
@@ -356,7 +313,7 @@ public class ForumService {
                                     if (task.isSuccessful()) {
                                         return task.getResult().toObjects(Post.class);
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return null;
                                 })
                 )
                 .callback(callback)
@@ -373,7 +330,7 @@ public class ForumService {
                                         post.setId(task.getResult().getId());
                                         return post;
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return null;
                                 })
                 )
                 .callback(callback)
@@ -390,7 +347,7 @@ public class ForumService {
                                     if (task.isSuccessful()) {
                                         return null;
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return null;
                                 })
                 )
                 .callback(callback)
@@ -407,7 +364,7 @@ public class ForumService {
                                     if (task.isSuccessful()) {
                                         return null;
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return null;
                                 })
                 )
                 .callback(callback)
@@ -430,7 +387,7 @@ public class ForumService {
                                         }
                                         return threads.get(RANDOM.nextInt(threads.size()));
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return null;
                                 })
                 )
                 .callback(callback)

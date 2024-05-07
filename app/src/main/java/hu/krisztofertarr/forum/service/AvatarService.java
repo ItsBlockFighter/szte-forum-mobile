@@ -36,7 +36,8 @@ public class AvatarService {
         return instance;
     }
 
-    private static final String AVATAR_PATH = "avatars/%s.jpg";
+    private static final String AVATAR_PATH = "images/%s/%s";
+    private static final String AVATAR_FILE_NAME = "avatar.jpg";
 
     private final FirebaseStorage storage;
 
@@ -47,9 +48,9 @@ public class AvatarService {
     public void uploadAvatar(String userId, Uri uri, Callback<Void> callback) {
         CustomTask.<Void>builder()
                 .backgroundTask(() ->
-                        storage.getReference(String.format(AVATAR_PATH, userId))
+                        storage.getReference(String.format(AVATAR_PATH, userId, AVATAR_FILE_NAME))
                                 .putFile(uri)
-                                .continueWith(EXECUTOR_SERVICE, task -> null)
+                                .continueWith(task -> null)
                 )
                 .callback(callback)
                 .execute(EXECUTOR_SERVICE);
@@ -67,15 +68,19 @@ public class AvatarService {
         } else {
             CustomTask.<Uri>builder()
                     .backgroundTask(() ->
-                            storage.getReference(String.format(AVATAR_PATH, userId))
+                            storage.getReference(String.format(AVATAR_PATH, userId, AVATAR_FILE_NAME))
                                     .getDownloadUrl()
-                                    .continueWith(EXECUTOR_SERVICE, task -> {
-                                        Uri result = task.getResult();
-                                        if (result != null) {
-                                            avatarCache.put(userId, result);
+                                    .continueWith(task -> {
+                                        if (task.isSuccessful()) {
+                                            Uri result = task.getResult();
+                                            if (result != null) {
+                                                avatarCache.put(userId, result);
+                                            }
+                                            return result;
                                         }
-                                        return result;
-                                    }))
+                                        return null;
+                                    })
+                    )
                     .callback(callback)
                     .execute(EXECUTOR_SERVICE);
         }

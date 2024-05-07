@@ -32,19 +32,31 @@ public class CustomTask<R> extends AsyncTask<Void, Void, Pair<R, Exception>> {
             Thread.currentThread().interrupt();
         }
 
-        return Pair.create(task.getResult(), task.getException());
+        if(task.isSuccessful()) {
+            return Pair.create(task.getResult(), null);
+        }
+        return Pair.create(null, task.getException());
     }
 
     @Override
-    protected void onPostExecute(Pair<R, Exception> r) {
-        super.onPostExecute(r);
+    protected void onPostExecute(Pair<R, Exception> result) {
+        super.onPostExecute(result);
 
-        if (r.second != null) {
-            callback.onFailure(r.second);
+        if(result.second != null) {
+            callback.onFailure(result.second);
             return;
         }
 
-        callback.onSuccess(r.first);
+        callback.onSuccess(result.first);
+    }
+
+    @Override
+    protected void onCancelled(Pair<R, Exception> r) {
+        super.onCancelled(r);
+
+        if(r != null && r.second != null) {
+            callback.onFailure(r.second);
+        }
     }
 
     public static <T> Builder<T> builder() {

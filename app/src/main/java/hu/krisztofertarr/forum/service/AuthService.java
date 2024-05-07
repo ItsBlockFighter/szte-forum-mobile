@@ -69,22 +69,25 @@ public class AuthService {
                 .backgroundTask(() ->
                         auth.createUserWithEmailAndPassword(email, password)
                                 .continueWithTask(task -> {
-                                    final FirebaseUser fUser = task.getResult().getUser();
-                                    if (fUser == null) {
-                                        return null;
+                                    if(task.isSuccessful()) {
+                                        final FirebaseUser fUser = task.getResult().getUser();
+                                        if (fUser == null) {
+                                            return null;
+                                        }
+
+                                        fUser.updateProfile(
+                                                new UserProfileChangeRequest.Builder()
+                                                        .setDisplayName(username)
+                                                        .build()
+                                        );
+
+                                        final User user = new User(fUser.getUid(), fUser.getEmail(), username);
+                                        return database.collection("users")
+                                                .document(user.getId())
+                                                .set(user)
+                                                .continueWith(v -> user);
                                     }
-
-                                    fUser.updateProfile(
-                                            new UserProfileChangeRequest.Builder()
-                                                    .setDisplayName(username)
-                                                    .build()
-                                    );
-
-                                    final User user = new User(fUser.getUid(), fUser.getEmail(), username);
-                                    return database.collection("users")
-                                            .document(user.getId())
-                                            .set(user)
-                                            .continueWith(v -> user);
+                                    return null;
                                 }))
                 .callback(callback)
                 .execute(EXECUTOR_SERVICE);
@@ -115,7 +118,7 @@ public class AuthService {
 
     public void getUsernameByUserId(String userId, Callback<String> callback) {
         String username = usernameCache.getIfPresent(userId);
-        if(username != null) {
+        if (username != null) {
             callback.onSuccess(username);
             return;
         }
@@ -126,16 +129,13 @@ public class AuthService {
                                 .document(userId)
                                 .get()
                                 .continueWith(task -> {
-                                    DocumentSnapshot result = task.getResult();
-                                    if (result == null) {
-                                        return "Unknown";
+                                    String name = null;
+                                    if (task.isSuccessful()) {
+                                        name = task.getResult().getString("username");
                                     }
-
-                                    String name = result.getString("username");
-                                    if (name == null) {
+                                    if (name == null || name.isEmpty()) {
                                         name = "Unknown";
                                     }
-
                                     usernameCache.put(userId, name);
                                     return name;
                                 })

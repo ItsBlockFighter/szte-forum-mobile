@@ -114,6 +114,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
                         @Override
                         public void onSuccess(Uri data) {
+                            if(data == null) {
+                                return;
+                            }
                             Glide.with(itemView)
                                     .load(data)
                                     .circleCrop()
