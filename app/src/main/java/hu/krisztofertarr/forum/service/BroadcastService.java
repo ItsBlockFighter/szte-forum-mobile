@@ -11,11 +11,11 @@ import androidx.core.app.NotificationCompat;
 
 import hu.krisztofertarr.forum.R;
 import hu.krisztofertarr.forum.model.Thread;
-import hu.krisztofertarr.forum.util.Callback;
+import hu.krisztofertarr.forum.util.task.Callback;
 
 public class BroadcastService {
 
-    private static final long INTERVAL = 1000 * 60;
+    private static final long INTERVAL = 1000 * 60 * 5;
 
     public BroadcastService(Context context) {
         Intent intent = new Intent(context, AlarmReceiver.class);
