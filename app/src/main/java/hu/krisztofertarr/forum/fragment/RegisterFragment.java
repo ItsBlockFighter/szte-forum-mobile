@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +17,10 @@ import android.widget.Toast;
 import hu.krisztofertarr.forum.ForumApplication;
 import hu.krisztofertarr.forum.R;
 import hu.krisztofertarr.forum.service.AuthService;
-import hu.krisztofertarr.forum.util.Callback;
 import hu.krisztofertarr.forum.util.ConditionUtil;
 import hu.krisztofertarr.forum.util.ComponentUtil;
 import hu.krisztofertarr.forum.util.annotation.ButtonId;
 import hu.krisztofertarr.forum.util.annotation.FieldId;
-import lombok.NoArgsConstructor;
 
 public class RegisterFragment extends Fragment {
 

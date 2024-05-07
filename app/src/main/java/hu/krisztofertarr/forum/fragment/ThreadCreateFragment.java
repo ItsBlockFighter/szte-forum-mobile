@@ -20,7 +20,7 @@ import hu.krisztofertarr.forum.model.Post;
 import hu.krisztofertarr.forum.model.Thread;
 import hu.krisztofertarr.forum.service.AuthService;
 import hu.krisztofertarr.forum.service.ForumService;
-import hu.krisztofertarr.forum.util.Callback;
+import hu.krisztofertarr.forum.util.task.Callback;
 import hu.krisztofertarr.forum.util.ComponentUtil;
 import hu.krisztofertarr.forum.util.ConditionUtil;
 import hu.krisztofertarr.forum.util.annotation.ButtonId;

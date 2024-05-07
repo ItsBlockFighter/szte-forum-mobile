@@ -1,7 +1,6 @@
 package hu.krisztofertarr.forum.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,11 +25,9 @@ import hu.krisztofertarr.forum.model.Thread;
 import hu.krisztofertarr.forum.model.adapter.ForumAdapter;
 import hu.krisztofertarr.forum.model.adapter.ThreadAdapter;
 import hu.krisztofertarr.forum.service.ForumService;
-import hu.krisztofertarr.forum.service.NotificationService;
-import hu.krisztofertarr.forum.util.Callback;
+import hu.krisztofertarr.forum.util.task.Callback;
 import hu.krisztofertarr.forum.util.ComponentUtil;
 import hu.krisztofertarr.forum.util.annotation.FieldId;
-import lombok.NoArgsConstructor;
 
 public class ForumFragment extends Fragment implements NavigationBarView.OnItemSelectedListener {
 

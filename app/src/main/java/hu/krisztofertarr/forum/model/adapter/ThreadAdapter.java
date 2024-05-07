@@ -15,7 +15,7 @@ import java.util.List;
 import hu.krisztofertarr.forum.R;
 import hu.krisztofertarr.forum.model.Thread;
 import hu.krisztofertarr.forum.service.AuthService;
-import hu.krisztofertarr.forum.util.Callback;
+import hu.krisztofertarr.forum.util.task.Callback;
 
 public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder> {
 

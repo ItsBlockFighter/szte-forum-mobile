@@ -8,15 +8,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import hu.krisztofertarr.forum.ForumApplication;
@@ -26,10 +23,9 @@ import hu.krisztofertarr.forum.model.Forum;
 import hu.krisztofertarr.forum.model.adapter.CategoryAdapter;
 import hu.krisztofertarr.forum.service.ForumService;
 import hu.krisztofertarr.forum.service.NotificationService;
-import hu.krisztofertarr.forum.util.Callback;
+import hu.krisztofertarr.forum.util.task.Callback;
 import hu.krisztofertarr.forum.util.ComponentUtil;
 import hu.krisztofertarr.forum.util.annotation.FieldId;
-import lombok.NoArgsConstructor;
 
 public class HomeFragment extends Fragment {
 
@@ -94,7 +90,6 @@ public class HomeFragment extends Fragment {
                 });
 
         this.adapter = new CategoryAdapter(getContext(), categories, (value, v) -> {
-            NotificationService.notify(getContext(), "Selected category: " + value.getName());
             application.replaceFragment(new ForumFragment(value));
         });
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

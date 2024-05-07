@@ -2,7 +2,6 @@ package hu.krisztofertarr.forum.fragment;
 
 import static android.app.Activity.RESULT_OK;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,19 +14,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseUser;
 
 import hu.krisztofertarr.forum.ForumApplication;
 import hu.krisztofertarr.forum.R;
 import hu.krisztofertarr.forum.service.AuthService;
 import hu.krisztofertarr.forum.service.AvatarService;
-import hu.krisztofertarr.forum.util.Callback;
+import hu.krisztofertarr.forum.util.task.Callback;
 import hu.krisztofertarr.forum.util.ComponentUtil;
 import hu.krisztofertarr.forum.util.annotation.ButtonId;
 import hu.krisztofertarr.forum.util.annotation.FieldId;
-import lombok.NoArgsConstructor;
 
 public class ProfileFragment extends Fragment {
 
@@ -54,14 +54,32 @@ public class ProfileFragment extends Fragment {
 
         ComponentUtil.load(this, view);
 
-        Uri avatar = AuthService.getInstance().getUser().getPhotoUrl();
-        if (avatar != null) {
-            updatePicture(avatar);
-        }
+        final FirebaseUser user = AuthService.getInstance().getUser();
+
+        AvatarService.getInstance().getAvatar(user.getUid(), new Callback<Uri>() {
+            @Override
+            public void onSuccess(Uri data) {
+                updatePicture(data);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(getContext(), "Failed to load avatar", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        profileName.setText(user.getDisplayName());
+        profileEmail.setText(user.getEmail());
     }
 
     @FieldId("profile_image")
     private ImageView profileImage;
+
+    @FieldId("profile_name")
+    private TextView profileName;
+
+    @FieldId("profile_email")
+    private TextView profileEmail;
 
     @ButtonId("profile_logout")
     public void logout(View view) {
@@ -90,15 +108,13 @@ public class ProfileFragment extends Fragment {
         if (resultCode == RESULT_OK && requestCode == 200) {
             Uri selectedImage = data.getData();
             if (selectedImage != null) {
-                profileImage.setImageURI(selectedImage);
-
                 AvatarService.getInstance().uploadAvatar(
-                        AuthService.getInstance().getUser().getUid(), selectedImage, new Callback<Uri>() {
+                        AuthService.getInstance().getUser().getUid(), selectedImage, new Callback<Void>() {
                             @Override
-                            public void onSuccess(Uri data) {
+                            public void onSuccess(Void data) {
                                 Toast.makeText(getContext(), "Avatar uploaded", Toast.LENGTH_SHORT).show();
 
-                                updatePicture(data);
+                                profileImage.setImageURI(selectedImage);
                             }
 
                             @Override

@@ -1,16 +1,11 @@
 package hu.krisztofertarr.forum;
 
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -28,8 +23,7 @@ import hu.krisztofertarr.forum.model.Thread;
 import hu.krisztofertarr.forum.service.AuthService;
 import hu.krisztofertarr.forum.service.BroadcastService;
 import hu.krisztofertarr.forum.service.ForumService;
-import hu.krisztofertarr.forum.service.NotificationService;
-import hu.krisztofertarr.forum.util.Callback;
+import hu.krisztofertarr.forum.util.task.Callback;
 import hu.krisztofertarr.forum.util.PermissionUtil;
 import lombok.Getter;
 
