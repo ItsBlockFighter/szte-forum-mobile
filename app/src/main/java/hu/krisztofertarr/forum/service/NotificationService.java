@@ -1,5 +1,6 @@
 package hu.krisztofertarr.forum.service;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,11 +13,18 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import hu.krisztofertarr.forum.ForumApplication;
+import lombok.Builder;
 
 public class NotificationService {
 
     public static void notify(Context context, String message) {
         new NotificationHelper(context).notify(message);
+    }
+
+    public static PendingIntent createPendingIntent(Context context, String id) {
+        Intent intent = new Intent(context, ForumApplication.class);
+        intent.putExtra("threadId", id);
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
     }
 
     private static class NotificationHelper {
@@ -70,6 +78,48 @@ public class NotificationService {
                     .setContentIntent(pendingIntent);
 
             notificationManager.notify(notificationId, builder.build());
+        }
+
+        public void notify(Notification notification) {
+            notificationManager.notify(notificationId, notification);
+        }
+    }
+
+    public static class NotificationBuilder {
+
+        private String title;
+        private String message;
+        private NotificationCompat.Action action;
+
+        public NotificationBuilder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public NotificationBuilder message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public NotificationBuilder action(NotificationCompat.Action action) {
+            this.action = action;
+            return this;
+        }
+
+        public void send(Context context) {
+            NotificationHelper notificationHelper = new NotificationHelper(context);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationHelper.CHANNEL_ID)
+                    .setSmallIcon(android.R.drawable.ic_dialog_info)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setAutoCancel(true);
+
+            if (action != null) {
+                builder.addAction(action);
+            }
+
+            notificationHelper.notify(builder.build());
         }
     }
 }
