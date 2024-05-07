@@ -23,8 +23,13 @@ import hu.krisztofertarr.forum.fragment.ForumFragment;
 import hu.krisztofertarr.forum.fragment.HomeFragment;
 import hu.krisztofertarr.forum.fragment.LoginFragment;
 import hu.krisztofertarr.forum.fragment.ProfileFragment;
+import hu.krisztofertarr.forum.fragment.ThreadFragment;
+import hu.krisztofertarr.forum.model.Thread;
 import hu.krisztofertarr.forum.service.AuthService;
+import hu.krisztofertarr.forum.service.BroadcastService;
+import hu.krisztofertarr.forum.service.ForumService;
 import hu.krisztofertarr.forum.service.NotificationService;
+import hu.krisztofertarr.forum.util.Callback;
 import hu.krisztofertarr.forum.util.PermissionUtil;
 import lombok.Getter;
 
@@ -39,6 +44,7 @@ public class ForumApplication extends AppCompatActivity {
     private static ForumApplication instance;
 
     private AuthService authService;
+    private BroadcastService broadcastService;
     private ActivityMainBinding binding;
 
     @Override
@@ -54,13 +60,34 @@ public class ForumApplication extends AppCompatActivity {
 
         authService = AuthService.getInstance();
 
+        broadcastService = new BroadcastService(this);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        final String threadId = getIntent().getStringExtra("threadId");
+        if (threadId != null) {
+            if (authService.isLoggedIn()) {
+                ForumService.getInstance().findThreadById(threadId, new Callback<Thread>() {
+                    @Override
+                    public void onSuccess(Thread data) {
+                        if (data != null) {
+                            replaceFragment(new ThreadFragment(data));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                });
+            }
+        }
 
         if (authService.isLoggedIn()) {
             replaceFragment(new HomeFragment());
         } else {
-            replaceFragment(new LoginFragment(this));
+            replaceFragment(new LoginFragment());
         }
 
         refreshNavigationBar();
@@ -77,11 +104,11 @@ public class ForumApplication extends AppCompatActivity {
                 if (authService.isLoggedIn()) {
                     replaceFragment(new ProfileFragment());
                 } else {
-                    replaceFragment(new LoginFragment(this));
+                    replaceFragment(new LoginFragment());
                 }
                 return true;
             } else if (item.getItemId() == R.id.navigation_login) {
-                replaceFragment(new LoginFragment(this));
+                replaceFragment(new LoginFragment());
                 return true;
             }
             if (getCurrentFragment() instanceof NavigationBarView.OnItemSelectedListener) {

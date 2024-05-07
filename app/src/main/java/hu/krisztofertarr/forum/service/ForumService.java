@@ -4,6 +4,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+import java.util.Random;
 
 import hu.krisztofertarr.forum.model.Category;
 import hu.krisztofertarr.forum.model.Forum;
@@ -304,6 +305,26 @@ public class ForumService {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         callback.onSuccess(null);
+                    } else {
+                        callback.onFailure(task.getException());
+                    }
+                });
+    }
+
+    private static final Random RANDOM = new Random();
+
+    public void randomThread(Callback<Thread> callback) {
+        database.collection("threads")
+                .whereEqualTo("locked", false)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Thread> threads = task.getResult().toObjects(Thread.class);
+                        if (threads.isEmpty()) {
+                            callback.onSuccess(null);
+                            return;
+                        }
+                        callback.onSuccess(threads.get(RANDOM.nextInt(threads.size())));
                     } else {
                         callback.onFailure(task.getException());
                     }

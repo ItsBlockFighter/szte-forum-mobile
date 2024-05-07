@@ -58,28 +58,28 @@
             android:text="Bejelentkezés" />
 
         <Button
-            android:id="@+id/register"
+            android:id="@+id/login_google"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/login"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            android:text="Regisztráció" />
+            android:text="Bejelentkezés Google fiókkal" />
 
         <!-- login as guest with user icon -->
         <RelativeLayout
-            android:id="@+id/gust_login"
+            android:id="@+id/guest_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/register"
+            android:layout_below="@id/login_google"
             android:layout_marginTop="5dp"
             android:layout_centerInParent="true">
 
             <ImageView
                 android:id="@+id/guest"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:contentDescription="TODO"
                 android:src="@drawable/user_solid" />
@@ -89,8 +89,27 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/guest"
                 android:text="Belépés vendégként"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
         </RelativeLayout>
+
+        <!-- divider -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/guest_login"
+            android:layout_marginTop="10dp"
+            android:background="@color/black" />
+
+        <Button
+            android:id="@+id/register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:text="Regisztráció" />
     </RelativeLayout>
 
 </ScrollView>

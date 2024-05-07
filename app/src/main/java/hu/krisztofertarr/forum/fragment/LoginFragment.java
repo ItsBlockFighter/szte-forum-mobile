@@ -23,22 +23,19 @@ import hu.krisztofertarr.forum.util.annotation.ButtonId;
 import hu.krisztofertarr.forum.util.annotation.FieldId;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 public class LoginFragment extends Fragment {
 
     private ForumApplication application;
     private AuthService authService;
 
-    public LoginFragment(ForumApplication application) {
-        this();
-        this.application = application;
+    public LoginFragment() {
+        this.application = ForumApplication.getInstance();
+        this.authService = AuthService.getInstance();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        authService = AuthService.getInstance();
     }
 
     @Override
@@ -52,7 +49,7 @@ public class LoginFragment extends Fragment {
 
         ComponentUtil.load(this, view);
 
-        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row);
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         view.startAnimation(animation);
     }
 
@@ -83,7 +80,7 @@ public class LoginFragment extends Fragment {
         application.replaceFragment(new RegisterFragment());
     }
 
-    @ButtonId("gust_login")
+    @ButtonId("guest_login")
     public void gustLogin(View view) {
         authService.loginGuest()
                 .addOnCompleteListener(task -> {
@@ -94,5 +91,9 @@ public class LoginFragment extends Fragment {
                     }
                     application.refreshNavigationBar();
                 });
+    }
+
+    @ButtonId("login_google")
+    public void loginGoogle(View view) {
     }
 }
