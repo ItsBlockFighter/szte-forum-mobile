@@ -16,11 +16,13 @@ import android.widget.Toast;
 
 import hu.krisztofertarr.forum.ForumApplication;
 import hu.krisztofertarr.forum.R;
+import hu.krisztofertarr.forum.model.User;
 import hu.krisztofertarr.forum.service.AuthService;
 import hu.krisztofertarr.forum.util.ConditionUtil;
 import hu.krisztofertarr.forum.util.ComponentUtil;
 import hu.krisztofertarr.forum.util.annotation.ButtonId;
 import hu.krisztofertarr.forum.util.annotation.FieldId;
+import hu.krisztofertarr.forum.util.task.Callback;
 
 public class RegisterFragment extends Fragment {
 
@@ -69,16 +71,22 @@ public class RegisterFragment extends Fragment {
         ConditionUtil.assertIsNotEmpty(getContext(), passwordField.getText().toString(), "Kérlek adj meg egy jelszót!");
         ConditionUtil.assertIsNotEmpty(getContext(), emailField.getText().toString(), "Kérlek adj meg egy e-mailt!");
 
-        authService.register(emailField.getText().toString(), usernameField.getText().toString(), passwordField.getText().toString())
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+        authService.register(
+                emailField.getText().toString(), usernameField.getText().toString(), passwordField.getText().toString(),
+                new Callback<User>() {
+                    @Override
+                    public void onSuccess(User data) {
                         Toast.makeText(getContext(), "Regisztráció sikeres!", Toast.LENGTH_SHORT).show();
 
                         application.replaceFragment(new LoginFragment());
-                    } else {
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
                         Toast.makeText(getContext(), "Nem sikerült a regisztráció!", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+        );
     }
 
     @ButtonId("back_to_login")

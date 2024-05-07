@@ -84,7 +84,6 @@ public class ProfileFragment extends Fragment {
     @ButtonId("profile_logout")
     public void logout(View view) {
         AuthService.getInstance().logOut();
-        application.refreshNavigationBar();
         application.replaceFragment(new LoginFragment());
     }
 
@@ -98,7 +97,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updatePicture(Uri uri) {
-        Glide.with(this).load(uri).into(profileImage);
+        Glide.with(this).load(uri).circleCrop().into(profileImage);
     }
 
     @Override

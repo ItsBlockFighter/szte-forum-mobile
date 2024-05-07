@@ -48,9 +48,9 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
         if (forum != null) {
             holder.bindTo(forum, clickListener);
 
-            if(holder.getAdapterPosition() > lastPosition) {
+            if(holder.getBindingAdapterPosition() > lastPosition) {
                 holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_left));
-                lastPosition = holder.getAdapterPosition();
+                lastPosition = holder.getBindingAdapterPosition();
             }
         }
     }

@@ -56,9 +56,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         if (post != null) {
             holder.bindTo(post, editListener, deleteListener);
 
-            if(holder.getAdapterPosition() > lastPosition) {
+            if(holder.getBindingAdapterPosition() > lastPosition) {
                 holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_up));
-                lastPosition = holder.getAdapterPosition();
+                lastPosition = holder.getBindingAdapterPosition();
             }
         }
     }

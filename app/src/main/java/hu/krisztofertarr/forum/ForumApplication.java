@@ -69,11 +69,6 @@ public class ForumApplication extends AppCompatActivity {
                             replaceFragment(new ThreadFragment(data));
                         }
                     }
-
-                    @Override
-                    public void onFailure(Exception e) {
-
-                    }
                 });
             }
         }
@@ -83,8 +78,6 @@ public class ForumApplication extends AppCompatActivity {
         } else {
             replaceFragment(new LoginFragment());
         }
-
-        refreshNavigationBar();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -141,6 +134,8 @@ public class ForumApplication extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(fragment.getClass().getName());
         transaction.commit();
+
+        refreshNavigationBar();
     }
 
     public Fragment getCurrentFragment() {
