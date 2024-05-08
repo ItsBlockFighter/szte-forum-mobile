@@ -3,7 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.HomeFragment">
+
+    <!-- display logo in the right top corner -->
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/logo"
+        android:scaleType="fitXY"
+        android:maxHeight="80dp"
+        android:maxWidth="80dp"
+        android:src="@mipmap/ic_launcher_foreground" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

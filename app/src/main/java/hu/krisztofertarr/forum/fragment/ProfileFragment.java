@@ -97,7 +97,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updatePicture(Uri uri) {
-        Glide.with(this).load(uri).circleCrop().into(profileImage);
+        Glide.with(this)
+                .load(uri)
+                .fitCenter()
+                .circleCrop()
+                .into(profileImage);
     }
 
     @Override

@@ -119,6 +119,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                             }
                             Glide.with(itemView)
                                     .load(data)
+                                    .fitCenter()
                                     .circleCrop()
                                     .into(avatar);
                         }

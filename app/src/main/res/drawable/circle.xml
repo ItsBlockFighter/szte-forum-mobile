@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
-        <!-- A kör színe, amikor a felhasználó hozzáér -->
         <shape android:shape="oval">
             <solid android:color="?attr/colorPrimaryDark" />
         </shape>
     </item>
     <item android:state_focused="true">
-        <!-- A kör színe, amikor a felhasználó rámutat -->
         <shape android:shape="oval">
             <solid android:color="?attr/colorAccent" />
         </shape>
     </item>
     <item>
-        <!-- A kör alapértelmezett színe -->
         <shape android:shape="oval">
             <solid android:color="?attr/colorPrimary" />
         </shape>
