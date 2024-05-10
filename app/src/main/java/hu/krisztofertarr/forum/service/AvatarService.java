@@ -75,8 +75,8 @@ public class AvatarService {
                                             Uri result = task.getResult();
                                             if (result != null) {
                                                 avatarCache.put(userId, result);
+                                                return result;
                                             }
-                                            return result;
                                         }
                                         return null;
                                     })

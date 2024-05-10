@@ -5,21 +5,21 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/house_solid"
-        android:title="Kezdőlap"
+        android:title="@string/homepage"
         android:visible="false"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/navigation_create_thread"
         android:icon="@drawable/folder_plus_solid"
-        android:title="Új Téma"
+        android:title="@string/new_thread"
         android:visible="false"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/navigation_account"
         android:icon="@drawable/user_gear_solid"
-        android:title="Fiók"
+        android:title="@string/account"
         android:visible="false"
         app:showAsAction="ifRoom" />
 
@@ -27,7 +27,7 @@
     <item
         android:id="@+id/navigation_login"
         android:icon="@drawable/user_plus_solid"
-        android:title="Bejelentkezés"
+        android:title="@string/login"
         android:visible="true"
         app:showAsAction="ifRoom" />
 </menu>

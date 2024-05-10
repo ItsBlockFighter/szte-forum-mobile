@@ -17,7 +17,7 @@
             android:layout_height="125dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/logo"
             android:src="@drawable/user_plus_solid" />
 
         <EditText
@@ -29,7 +29,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:autofillHints="username"
-            android:hint="Felhasználónév"
+            android:hint="@string/name"
             android:importantForAutofill="yes"
             android:inputType="text" />
 
@@ -42,7 +42,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:autofillHints="password"
-            android:hint="Jelszó"
+            android:hint="@string/password"
             android:importantForAutofill="yes"
             android:inputType="textPassword" />
 
@@ -55,7 +55,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:autofillHints="email"
-            android:hint="Email"
+            android:hint="@string/email"
             android:importantForAutofill="yes"
             android:inputType="textEmailAddress" />
 
@@ -67,7 +67,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:text="Regisztráció" />
+            android:text="@string/register" />
 
         <!-- arrow with text Vissza a bejelentkezéshez -->
         <RelativeLayout
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/arrow"
-                android:text="Vissza a bejelentkezéshez" />
+                android:text="@string/back_to_login" />
         </RelativeLayout>
     </RelativeLayout>
 

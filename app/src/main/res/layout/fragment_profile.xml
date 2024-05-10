@@ -17,7 +17,7 @@
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/profile_avatar_description"
             android:src="@drawable/user_solid" />
 
         <TextView
@@ -27,7 +27,7 @@
             android:layout_below="@id/profile_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
-            android:text="Profilkép módosítása" />
+            android:text="@string/avatar_modify" />
 
         <TextView
             android:id="@+id/profile_name"
@@ -36,7 +36,7 @@
             android:layout_below="@id/profile_image_upload"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
-            android:text="Name"
+            android:text="@string/name"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -47,7 +47,7 @@
             android:layout_below="@id/profile_name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
-            android:text="Email"
+            android:text="@string/email"
             android:textSize="14sp" />
 
         <Button
@@ -57,7 +57,7 @@
             android:layout_below="@id/profile_email"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
-            android:text="Kijelentkezés" />
+            android:text="@string/logout" />
 
     </RelativeLayout>
 

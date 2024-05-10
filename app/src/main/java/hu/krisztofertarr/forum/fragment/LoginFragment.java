@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 
 public class LoginFragment extends Fragment {
 
-    private ForumApplication application;
-    private AuthService authService;
+    private final ForumApplication application;
+    private final AuthService authService;
 
     public LoginFragment() {
         this.application = ForumApplication.getInstance();
@@ -99,9 +99,5 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(getContext(), "Sikertelen bejelentkezés!", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @ButtonId("login_google")
-    public void loginGoogle(View view) {
     }
 }

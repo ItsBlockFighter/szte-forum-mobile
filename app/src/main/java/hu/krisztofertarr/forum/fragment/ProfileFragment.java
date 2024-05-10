@@ -59,12 +59,13 @@ public class ProfileFragment extends Fragment {
         AvatarService.getInstance().getAvatar(user.getUid(), new Callback<Uri>() {
             @Override
             public void onSuccess(Uri data) {
-                updatePicture(data);
+                if (data != null)
+                    updatePicture(data);
             }
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(getContext(), "Failed to load avatar", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Az Avatar betöltése nem sikerült.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -93,7 +94,7 @@ public class ProfileFragment extends Fragment {
         intent.setType("image/*");
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 200);
+        startActivityForResult(Intent.createChooser(intent, "Kép kiválasztása"), 200);
     }
 
     private void updatePicture(Uri uri) {
@@ -115,14 +116,14 @@ public class ProfileFragment extends Fragment {
                         AuthService.getInstance().getUser().getUid(), selectedImage, new Callback<Void>() {
                             @Override
                             public void onSuccess(Void data) {
-                                Toast.makeText(getContext(), "Avatar uploaded", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Avatar sikeresen feltöltve!", Toast.LENGTH_SHORT).show();
 
                                 profileImage.setImageURI(selectedImage);
                             }
 
                             @Override
                             public void onFailure(Exception e) {
-                                Toast.makeText(getContext(), "Failed to upload avatar", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Nem sikerült feltölteni az Avatar-t!", Toast.LENGTH_SHORT).show();
                             }
                         }
                 );

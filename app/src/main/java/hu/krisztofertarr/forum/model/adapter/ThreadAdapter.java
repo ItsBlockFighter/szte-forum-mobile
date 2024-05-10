@@ -77,7 +77,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         public void bindTo(Thread thread, ClickListener<Thread> clickListener) {
             this.title.setText(thread.getTitle());
             this.author.setText("...");
-            this.stats.setText("Comments: " + thread.getPosts().size());
+            this.stats.setText("Kommentek: " + thread.getPosts().size());
 
             AuthService.getInstance().getUsernameByUserId(
                     thread.getAuthorId(),

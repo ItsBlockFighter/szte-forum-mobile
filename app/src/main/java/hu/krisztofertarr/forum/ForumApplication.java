@@ -158,7 +158,10 @@ public class ForumApplication extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PermissionUtil.REQUEST_CODE_PERMISSIONS) {
+            PermissionUtil.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+            return;
+        }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionUtil.onRequestPermissionsResult(this, requestCode, permissions, grantResults, null);
     }
 }

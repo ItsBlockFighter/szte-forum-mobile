@@ -10,7 +10,7 @@
         android:id="@+id/category_image"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:contentDescription="TODO"
+        android:contentDescription="@string/category_icon_description"
         android:src="@drawable/list_solid" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="8dp"
         android:layout_toEndOf="@id/category_image"
-        android:text="Title"
+        android:text="@string/lorem_ipsum_title"
         android:textSize="18sp" />
 
     <TextView
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/category_image"
-        android:text="Lorem ipsum dolor sit amet, consecteturaaaaaaaa"
+        android:text="@string/lorem_ipsum"
         android:textSize="14sp" />
 
     <View

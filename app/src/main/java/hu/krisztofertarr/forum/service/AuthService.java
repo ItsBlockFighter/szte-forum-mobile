@@ -1,20 +1,15 @@
 package hu.krisztofertarr.forum.service;
 
-import android.net.Uri;
 import android.util.Log;
 
-import com.google.android.gms.tasks.Task;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -94,9 +89,19 @@ public class AuthService {
     }
 
     public void login(String email, String password, Callback<Void> callback) {
-        CustomTask.<Void>builder()
-                .backgroundTask(() -> auth.signInWithEmailAndPassword(email, password).continueWithTask(task -> null))
-                .callback(callback)
+        CustomTask.<AuthResult>builder()
+                .backgroundTask(() -> auth.signInWithEmailAndPassword(email, password))
+                .callback(new Callback<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult data) {
+                        callback.onSuccess(null);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        callback.onFailure(e);
+                    }
+                })
                 .execute(EXECUTOR_SERVICE);
     }
 
@@ -142,8 +147,5 @@ public class AuthService {
                 )
                 .callback(callback)
                 .execute(EXECUTOR_SERVICE);
-    }
-
-    public void loginWithGoogle() {
     }
 }

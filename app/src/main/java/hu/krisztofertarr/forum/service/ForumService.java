@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -43,98 +44,6 @@ public class ForumService {
 
     private ForumService() {
         this.database = FirebaseFirestore.getInstance();
-
-        //this.initialize();
-    }
-
-    private void initialize() {
-        // Initialize the database with some default data
-        database.collection("categories")
-                .add(new Category("General", "General discussion"))
-                .addOnSuccessListener(documentReference -> {
-                    database.collection("forums")
-                            .add(new Forum(documentReference.getId(), "General", "General discussion"))
-                            .addOnSuccessListener(documentReference1 -> {
-                                database.collection("threads")
-                                        .add(new Thread(documentReference1.getId(), "Welcome to the forum", "admin", true))
-                                        .addOnSuccessListener(documentReference2 -> {
-                                            database.collection("posts")
-                                                    .add(new Post(documentReference2.getId(), "Welcome to the forum!", "admin"));
-                                        });
-                                database.collection("threads")
-                                        .add(new Thread(documentReference1.getId(), "Forum rules", "admin", true))
-                                        .addOnSuccessListener(documentReference2 -> {
-                                            database.collection("posts")
-                                                    .add(new Post(documentReference2.getId(), "Forum rules!", "admin"))
-                                                    .addOnSuccessListener(documentReference3 -> {
-                                                        database.collection("posts")
-                                                                .add(new Post(documentReference2.getId(), "No spamming!", "admin"));
-                                                        database.collection("posts")
-                                                                .add(new Post(documentReference2.getId(), "No trolling!", "admin"));
-                                                    });
-                                        });
-                            });
-                });
-        database.collection("categories")
-                .add(new Category("Programming", "Programming discussion"))
-                .addOnSuccessListener(documentReference -> {
-                    database.collection("forums")
-                            .add(new Forum(documentReference.getId(), "Programming", "Programming discussion"))
-                            .addOnSuccessListener(documentReference1 -> {
-                                database.collection("threads")
-                                        .add(new Thread(documentReference1.getId(), "Welcome to the programming forum", "admin", true))
-                                        .addOnSuccessListener(documentReference2 -> {
-                                            database.collection("posts")
-                                                    .add(new Post(documentReference2.getId(), "Welcome to the programming forum!", "admin"));
-                                        });
-                                database.collection("threads")
-                                        .add(new Thread(documentReference1.getId(), "Programming is fun", "admin", true))
-                                        .addOnSuccessListener(documentReference2 -> {
-                                            database.collection("posts")
-                                                    .add(new Post(documentReference2.getId(), "Programming is fun!", "admin"));
-                                        });
-                            });
-                });
-        database.collection("categories")
-                .add(new Category("Android", "Android development discussion"))
-                .addOnSuccessListener(documentReference -> {
-                    database.collection("forums")
-                            .add(new Forum(documentReference.getId(), "Android", "Android development discussion"))
-                            .addOnSuccessListener(documentReference1 -> {
-                                database.collection("threads")
-                                        .add(new Thread(documentReference1.getId(), "Welcome to the Android forum", "admin", true))
-                                        .addOnSuccessListener(documentReference2 -> {
-                                            database.collection("posts")
-                                                    .add(new Post(documentReference2.getId(), "Welcome to the Android forum!", "admin"));
-                                        });
-                                database.collection("threads")
-                                        .add(new Thread(documentReference1.getId(), "Android development", "admin", true))
-                                        .addOnSuccessListener(documentReference2 -> {
-                                            database.collection("posts")
-                                                    .add(new Post(documentReference2.getId(), "Android development is fun!", "admin"));
-                                        });
-                            });
-                });
-        database.collection("categories")
-                .add(new Category("iOS", "iOS development discussion"))
-                .addOnSuccessListener(documentReference -> {
-                    database.collection("forums")
-                            .add(new Forum(documentReference.getId(), "iOS", "iOS development discussion"))
-                            .addOnSuccessListener(documentReference1 -> {
-                                database.collection("threads")
-                                        .add(new Thread(documentReference1.getId(), "Welcome to the iOS forum", "admin", true))
-                                        .addOnSuccessListener(documentReference2 -> {
-                                            database.collection("posts")
-                                                    .add(new Post(documentReference2.getId(), "Welcome to the iOS forum!", "admin"));
-                                        });
-                                database.collection("threads")
-                                        .add(new Thread(documentReference1.getId(), "iOS development", "admin", true))
-                                        .addOnSuccessListener(documentReference2 -> {
-                                            database.collection("posts")
-                                                    .add(new Post(documentReference2.getId(), "iOS development is fun!", "admin"));
-                                        });
-                            });
-                });
     }
 
     public void findCategories(Callback<List<Category>> callback) {
@@ -147,7 +56,7 @@ public class ForumService {
                                     if (task.isSuccessful()) {
                                         return task.getResult().toObjects(Category.class);
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return new ArrayList<>();
                                 })
                 )
                 .callback(callback)
@@ -165,7 +74,7 @@ public class ForumService {
                                     if (task.isSuccessful()) {
                                         return task.getResult().toObjects(Forum.class);
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return new ArrayList<>();
                                 })
                 )
                 .callback(callback)
@@ -182,7 +91,7 @@ public class ForumService {
                                     if (task.isSuccessful()) {
                                         return task.getResult().toObject(Forum.class);
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return null;
                                 })
                 )
                 .callback(callback)
@@ -200,7 +109,7 @@ public class ForumService {
                                     if (task.isSuccessful()) {
                                         return task.getResult().toObjects(Forum.class);
                                     }
-                                    throw new RuntimeException(task.getException());
+                                    return new ArrayList<>();
                                 })
                 )
                 .callback(callback)
@@ -218,7 +127,7 @@ public class ForumService {
                                     if (task.isSuccessful()) {
                                         return task.getResult().toObjects(Thread.class);
                                     }
-                                    return null;
+                                    return new ArrayList<>();
                                 })
                 )
                 .callback(callback)

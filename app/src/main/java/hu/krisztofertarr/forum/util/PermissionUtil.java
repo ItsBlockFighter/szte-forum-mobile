@@ -1,32 +1,26 @@
 package hu.krisztofertarr.forum.util;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class PermissionUtil {
 
-    public static final int REQUEST_CODE_PERMISSIONS = 100;
+    public final int REQUEST_CODE_PERMISSIONS = 100;
 
-    /**
-     * Check if multiple permissions are granted, if not request them.
-     *
-     * @param activity    calling activity which needs permissions.
-     * @param permissions one or more permissions, such as {@link android.Manifest.permission#CAMERA}.
-     * @return true if all permissions are granted, false if at least one is not granted yet.
-     */
-    public static boolean checkAndRequestPermissions(Activity activity, String... permissions) {
+
+    public void checkAndRequestPermissions(Activity activity, String... permissions) {
         List<String> permissionsList = new ArrayList<>();
         for (String permission : permissions) {
             int permissionState = activity.checkSelfPermission(permission);
@@ -40,78 +34,43 @@ public class PermissionUtil {
                     permissionsList.toArray(new String[0]),
                     REQUEST_CODE_PERMISSIONS
             );
-            return false;
         }
-
-        return true;
     }
 
+    public void onRequestPermissionsResult(final Activity activity, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode != PermissionUtil.REQUEST_CODE_PERMISSIONS || grantResults.length == 0) {
+            return;
+        }
 
-    /**
-     * Handle the result of permission request, should be called from the calling {@link Activity}'s
-     * {@link ActivityCompat.OnRequestPermissionsResultCallback#onRequestPermissionsResult(int, String[], int[])}
-     *
-     * @param activity     calling activity which needs permissions.
-     * @param requestCode  code used for requesting permission.
-     * @param permissions  permissions which were requested.
-     * @param grantResults results of request.
-     * @param callBack     Callback interface to receive the result of permission request.
-     */
-    public static void onRequestPermissionsResult(final Activity activity, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, final PermissionsCallBack callBack) {
-        if (requestCode == PermissionUtil.REQUEST_CODE_PERMISSIONS && grantResults.length > 0) {
+        final List<String> permissionsList = new ArrayList<>();
+        for (int i = 0; i < permissions.length; i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                permissionsList.add(permissions[i]);
+            }
+        }
 
-            final List<String> permissionsList = new ArrayList<>();
-            for (int i = 0; i < permissions.length; i++) {
-                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                    permissionsList.add(permissions[i]);
+        if (!permissionsList.isEmpty()) {
+            boolean showRationale = false;
+            for (String permission : permissionsList) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+                    showRationale = true;
+                    break;
                 }
             }
 
-            if (permissionsList.isEmpty() && callBack != null) {
-                callBack.permissionsGranted();
-            } else {
-                boolean showRationale = false;
-                for (String permission : permissionsList) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-                        showRationale = true;
-                        break;
-                    }
-                }
-
-                if (showRationale) {
-                    showAlertDialog(activity,
-                            (dialogInterface, i) -> checkAndRequestPermissions(activity, permissionsList.toArray(new String[0])),
-                            (dialogInterface, i) -> {
-                                if (callBack != null) {
-                                    callBack.permissionsDenied();
-                                }
-                            });
-                }
+            if (showRationale) {
+                showAlertDialog(activity, (dialogInterface, i) -> checkAndRequestPermissions(activity, permissionsList.toArray(new String[0])));
             }
         }
     }
 
-    /**
-     * Show alert if any permission is denied and ask again for it.
-     *
-     * @param context
-     * @param okListener
-     * @param cancelListener
-     */
-    private static void showAlertDialog(Context context,
-                                        DialogInterface.OnClickListener okListener,
-                                        DialogInterface.OnClickListener cancelListener) {
+    private void showAlertDialog(Context context, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(context)
-                .setMessage("Some permissions are not granted. Application may not work as expected. Do you want to grant them?")
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", cancelListener)
+                .setMessage("Egyes engedélyek nincsenek megadva. Előfordulhat, hogy az alkalmazás nem a várt módon fog működni. Szeretné megadni őket?")
+                .setPositiveButton("Igen", okListener)
+                .setNegativeButton("Mégse", (dialogInterface, i) -> {
+                })
                 .create()
                 .show();
-    }
-
-    public interface PermissionsCallBack {
-        void permissionsGranted();
-
-        void permissionsDenied();
     }
 }

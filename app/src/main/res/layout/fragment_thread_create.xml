@@ -12,28 +12,27 @@
         android:layout_margin="5dp"
         >
 
-        <!-- Thread Title Input -->
         <EditText
             android:id="@+id/thread_create_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title"
+            android:hint="@string/thread_create_title"
             android:inputType="textShortMessage"
             android:layout_centerHorizontal="true"
             android:paddingBottom="18dp"
-            android:layout_marginBottom="15dp"/>
+            android:layout_marginBottom="15dp"
+            android:autofillHints="" />
 
-        <!-- Thread Content (First post) Input -->
         <EditText
             android:id="@+id/thread_create_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Content"
+            android:hint="@string/thread_create_content"
             android:inputType="textMultiLine"
             android:layout_below="@id/thread_create_title"
-            android:paddingBottom="45dp" />
+            android:paddingBottom="45dp"
+            android:autofillHints="" />
 
-        <!-- Create Button -->
         <Button
             android:id="@+id/thread_create_button"
             android:layout_width="wrap_content"
@@ -41,9 +40,8 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@id/thread_create_content"
             android:layout_marginBottom="5dp"
-            android:text="Létrehozás" />
+            android:text="@string/thread_create_button" />
 
-        <!-- Cancel Button -->
         <Button
             android:id="@+id/thread_cancel_button"
             android:layout_width="wrap_content"
@@ -51,7 +49,7 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@id/thread_create_button"
             android:layout_marginBottom="5dp"
-            android:text="Mégse" />
+            android:text="@string/cancel" />
     </RelativeLayout>
 
 </FrameLayout>

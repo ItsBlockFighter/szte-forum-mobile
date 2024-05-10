@@ -14,12 +14,11 @@
 
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:contentDescription="TODO"
-            android:src="@drawable/user_plus_solid" />
+            android:contentDescription="@string/logo"
+            android:src="@mipmap/ic_launcher_foreground" />
 
         <EditText
             android:id="@+id/email"
@@ -30,7 +29,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:autofillHints="email"
-            android:hint="Email"
+            android:hint="@string/email"
             android:importantForAutofill="yes"
             android:inputType="textEmailAddress" />
 
@@ -43,7 +42,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:autofillHints="password"
-            android:hint="Jelszó"
+            android:hint="@string/password"
             android:importantForAutofill="yes"
             android:inputType="textPassword" />
 
@@ -55,24 +54,14 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:text="Bejelentkezés" />
-
-        <Button
-            android:id="@+id/login_google"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/login"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:text="Bejelentkezés Google fiókkal" />
+            android:text="@string/login" />
 
         <!-- login as guest with user icon -->
         <RelativeLayout
             android:id="@+id/guest_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/login_google"
+            android:layout_below="@id/login"
             android:layout_marginTop="5dp"
             android:layout_centerInParent="true">
 
@@ -80,15 +69,16 @@
                 android:id="@+id/guest"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginEnd="5dp"
                 android:layout_centerVertical="true"
-                android:contentDescription="TODO"
+                android:contentDescription="@string/guest_icon_description"
                 android:src="@drawable/user_solid" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/guest"
-                android:text="Belépés vendégként"
+                android:text="@string/login_guest"
                 android:textSize="16sp" />
         </RelativeLayout>
 
@@ -109,7 +99,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:text="Regisztráció" />
+            android:text="@string/register" />
     </RelativeLayout>
 
 </ScrollView>

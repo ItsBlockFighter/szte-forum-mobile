@@ -2,7 +2,7 @@
     <string name="app_name">Forum</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
+    <string name="prompt_password">Jelszó</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
@@ -31,7 +31,36 @@
     <string name="image_view_item_transform_content_description">Represents an image view in the
         item
     </string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="logo">szte forum unofficial logo</string>
+    <string name="forum_image_icon_description">forum image icon (folder)</string>
+    <string name="register">Regisztráció</string>
+    <string name="login_guest">Belépés vendégként</string>
+    <string name="guest_icon_description">guest icon (user)</string>
+    <string name="login">Bejelentkezés</string>
+    <string name="password">Jelszó</string>
+    <string name="email">Email</string>
+    <string name="profile_avatar_description">profile avatar</string>
+    <string name="avatar_modify">Profilkép módosítása</string>
+    <string name="name">Név</string>
+    <string name="logout">Kijelentkezés</string>
+    <string name="back_to_login">Vissza a bejelentkezéshez</string>
+    <string name="thread_icon_description">thread icon (note sticky)</string>
+    <string name="comment_prompt">Írj egy kommentet…</string>
+    <string name="send_button">Küldés</string>
+    <string name="thread_create_button">Létrehozás</string>
+    <string name="cancel">Mégse</string>
+    <string name="thread_create_content">Üzenet</string>
+    <string name="thread_create_title">Cím</string>
+    <string name="navigate_icon_description">navigate icon</string>
+    <string name="category_icon_description">category icon (list)</string>
+    <string name="delete_icon_description">delete icon (trashcan)</string>
+    <string name="edit_icon_description">edit icon (pencil)</string>
+    <string name="example_date">1970–01–01</string>
+    <string name="save">Mentés</string>
+    <string name="comments_counter">Kommentek: 0</string>
+    <string name="homepage">Kezdőlap</string>
+    <string name="new_thread">Új Téma</string>
+    <string name="account">Fiók</string>
 </resources>

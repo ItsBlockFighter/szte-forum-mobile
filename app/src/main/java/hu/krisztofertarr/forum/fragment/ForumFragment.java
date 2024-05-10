@@ -31,15 +31,11 @@ import hu.krisztofertarr.forum.util.annotation.FieldId;
 
 public class ForumFragment extends Fragment implements NavigationBarView.OnItemSelectedListener {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-
     private final ForumApplication application;
     private Forum forum;
 
+    private final List<Forum> subForums = new ArrayList<>();
+    private final List<Thread> threads = new ArrayList<>();
 
     private ForumAdapter forumAdapter;
     private ThreadAdapter threadAdapter;
@@ -53,8 +49,10 @@ public class ForumFragment extends Fragment implements NavigationBarView.OnItemS
         this.forum = forum;
     }
 
-    private List<Forum> subForums = new ArrayList<>();
-    private List<Thread> threads = new ArrayList<>();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

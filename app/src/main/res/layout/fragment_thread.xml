@@ -11,14 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp">
 
-        <!-- Thread Image with Title -->
         <ImageView
             android:id="@+id/thread_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentStart="true"
             android:layout_margin="8dp"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/thread_icon_description"
             android:src="@drawable/note_sticky_solid" />
 
         <TextView
@@ -28,7 +27,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/thread_image"
-            android:text="Title"
+            android:text="@string/lorem_ipsum_title"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -41,7 +40,6 @@
             android:src="@drawable/baseline_delete_24"
             android:visibility="gone" />
 
-        <!-- Author -->
         <TextView
             android:id="@+id/thread_author"
             android:layout_width="wrap_content"
@@ -49,10 +47,9 @@
             android:layout_below="@id/thread_title"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/thread_image"
-            android:text="Author: Pista"
+            android:text="@string/lorem_ipsum"
             android:textSize="12sp" />
 
-        <!-- divider -->
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
@@ -62,7 +59,6 @@
             android:layout_toEndOf="@id/thread_image"
             android:background="@color/black" />
 
-        <!-- Posts -->
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -73,7 +69,6 @@
             android:scrollbars="vertical"
             />
 
-        <!-- Bottom input -->
         <RelativeLayout
             android:id="@+id/thread_input_layout"
             android:layout_width="match_parent"
@@ -86,7 +81,7 @@
                 android:id="@+id/thread_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Write a comment..."
+                android:hint="@string/comment_prompt"
                 android:inputType="textMultiLine"
                 android:layout_toStartOf="@id/thread_send"
                 android:padding="18dp" />
@@ -98,7 +93,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignBottom="@id/thread_input"
                 android:layout_marginBottom="5dp"
-                android:text="Küldés" />
+                android:text="@string/send_button" />
         </RelativeLayout>
 
     </RelativeLayout>
