@@ -63,4 +63,5 @@
     <string name="homepage">Kezdőlap</string>
     <string name="new_thread">Új Téma</string>
     <string name="account">Fiók</string>
+    <string name="error">(error)</string>
 </resources>

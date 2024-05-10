@@ -27,17 +27,22 @@ import hu.krisztofertarr.forum.util.task.Callback;
 public class RegisterFragment extends Fragment {
 
     private final ForumApplication application;
-    private AuthService authService;
+    private final AuthService authService;
 
     public RegisterFragment() {
         this.application = ForumApplication.getInstance();
+        this.authService = AuthService.getInstance();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        application.refreshNavigationBar();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        authService = AuthService.getInstance();
     }
 
     @Override

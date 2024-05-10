@@ -84,7 +84,8 @@
                 android:hint="@string/comment_prompt"
                 android:inputType="textMultiLine"
                 android:layout_toStartOf="@id/thread_send"
-                android:padding="18dp" />
+                android:padding="18dp"
+                android:autofillHints="" />
 
             <Button
                 android:id="@+id/thread_send"

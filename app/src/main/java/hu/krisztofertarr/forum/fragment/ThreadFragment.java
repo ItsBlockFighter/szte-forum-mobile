@@ -38,17 +38,22 @@ import lombok.NoArgsConstructor;
 public class ThreadFragment extends Fragment {
 
     private Thread thread;
+    private PostAdapter adapter;
 
     public ThreadFragment(Thread thread) {
         this.thread = thread;
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ForumApplication.getInstance().refreshNavigationBar();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-    private PostAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,11 +89,6 @@ public class ThreadFragment extends Fragment {
 
                         post.setContent(content);
                         ForumService.getInstance().savePost(post, new Callback<Void>() {
-                            @Override
-                            public void onSuccess(Void data) {
-                                //adapter.notifyDataSetChanged();
-                            }
-
                             @Override
                             public void onFailure(Exception e) {
                                 Toast.makeText(getContext(), "Üzenet mentése sikertelen!", Toast.LENGTH_SHORT).show();
@@ -130,7 +130,7 @@ public class ThreadFragment extends Fragment {
 
                     @Override
                     public void onFailure(Exception e) {
-                        author.setText("Error");
+                        author.setText(R.string.error);
                     }
                 }
         );
@@ -200,7 +200,7 @@ public class ThreadFragment extends Fragment {
     }
 
     @ButtonId("thread_send")
-    public void send(View view) {
+    public void send() {
         String content = input.getText().toString();
         ConditionUtil.assertIsNotEmpty(getContext(), content, "Nem küldhetsz üres üzenetet!");
 

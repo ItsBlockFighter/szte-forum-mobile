@@ -134,8 +134,6 @@ public class ForumApplication extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(fragment.getClass().getName());
         transaction.commit();
-
-        refreshNavigationBar();
     }
 
     public Fragment getCurrentFragment() {

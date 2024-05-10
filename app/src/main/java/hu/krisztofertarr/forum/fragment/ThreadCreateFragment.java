@@ -37,6 +37,12 @@ public class ThreadCreateFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ForumApplication.getInstance().refreshNavigationBar();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
