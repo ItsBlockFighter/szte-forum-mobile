@@ -32,7 +32,7 @@ public class CustomTask<R> extends AsyncTask<Void, Void, Pair<R, Exception>> {
             Thread.currentThread().interrupt();
         }
 
-        if(task.isSuccessful()) {
+        if (task.isSuccessful()) {
             return Pair.create(task.getResult(), null);
         }
         return Pair.create(null, task.getException());
@@ -42,7 +42,7 @@ public class CustomTask<R> extends AsyncTask<Void, Void, Pair<R, Exception>> {
     protected void onPostExecute(Pair<R, Exception> result) {
         super.onPostExecute(result);
 
-        if(result.second != null) {
+        if (result.second != null) {
             callback.onFailure(result.second);
             return;
         }
@@ -54,7 +54,7 @@ public class CustomTask<R> extends AsyncTask<Void, Void, Pair<R, Exception>> {
     protected void onCancelled(Pair<R, Exception> r) {
         super.onCancelled(r);
 
-        if(r != null && r.second != null) {
+        if (r != null && r.second != null) {
             callback.onFailure(r.second);
         }
     }

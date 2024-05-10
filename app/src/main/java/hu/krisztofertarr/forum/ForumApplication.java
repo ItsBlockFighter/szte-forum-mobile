@@ -1,5 +1,6 @@
 package hu.krisztofertarr.forum;
 
+import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,11 +24,9 @@ import hu.krisztofertarr.forum.model.Thread;
 import hu.krisztofertarr.forum.service.AuthService;
 import hu.krisztofertarr.forum.service.BroadcastService;
 import hu.krisztofertarr.forum.service.ForumService;
-import hu.krisztofertarr.forum.util.task.Callback;
 import hu.krisztofertarr.forum.util.PermissionUtil;
+import hu.krisztofertarr.forum.util.task.Callback;
 import lombok.Getter;
-
-import android.Manifest;
 
 @Getter
 public class ForumApplication extends AppCompatActivity {
@@ -49,7 +48,6 @@ public class ForumApplication extends AppCompatActivity {
 
         requestPermissions();
 
-        // Firebase SafetyNet
         FirebaseApp.initializeApp(this);
 
         authService = AuthService.getInstance();
@@ -140,7 +138,7 @@ public class ForumApplication extends AppCompatActivity {
         return getSupportFragmentManager().findFragmentById(R.id.fragment_container);
     }
 
-    public void requestPermissions() {
+    private void requestPermissions() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             return;
         }

@@ -2,7 +2,6 @@ package hu.krisztofertarr.forum.model;
 
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
-import com.google.firebase.firestore.PropertyName;
 
 import java.util.ArrayList;
 import java.util.Date;

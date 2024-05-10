@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
@@ -50,7 +49,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         if (category != null) {
             holder.bindTo(category);
 
-            if(holder.getBindingAdapterPosition() > lastPosition) {
+            if (holder.getBindingAdapterPosition() > lastPosition) {
                 holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in));
                 lastPosition = holder.getBindingAdapterPosition();
             }

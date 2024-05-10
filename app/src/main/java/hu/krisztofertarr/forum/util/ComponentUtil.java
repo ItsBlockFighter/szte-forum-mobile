@@ -19,7 +19,7 @@ public class ComponentUtil {
 
     private static final BiFunction<Object, Method, View.OnClickListener> buttonClickListener = (instance, method) -> v -> {
         try {
-            if(method.getParameterCount() == 1) {
+            if (method.getParameterCount() == 1) {
                 method.invoke(instance, v);
                 return;
             }
@@ -37,9 +37,9 @@ public class ComponentUtil {
     public void loadFields(Object instance, View view) {
         final Class<?> clazz = instance.getClass();
 
-        for(Field field : clazz.getDeclaredFields()) {
+        for (Field field : clazz.getDeclaredFields()) {
             final FieldId fieldId = field.getAnnotation(FieldId.class);
-            if(fieldId == null) {
+            if (fieldId == null) {
                 continue;
             }
             final String name = fieldId.value();
@@ -58,9 +58,9 @@ public class ComponentUtil {
     public void loadButtons(Object instance, View view) {
         final Class<?> clazz = instance.getClass();
 
-        for(Method method : clazz.getDeclaredMethods()) {
+        for (Method method : clazz.getDeclaredMethods()) {
             final ButtonId buttonId = method.getAnnotation(ButtonId.class);
-            if(buttonId == null) {
+            if (buttonId == null) {
                 continue;
             }
             final String name = buttonId.value();

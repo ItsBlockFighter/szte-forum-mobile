@@ -1,12 +1,13 @@
 package hu.krisztofertarr.forum.util.task;
 
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 
 @Builder
 @RequiredArgsConstructor

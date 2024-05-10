@@ -64,7 +64,7 @@ public class AuthService {
                 .backgroundTask(() ->
                         auth.createUserWithEmailAndPassword(email, password)
                                 .continueWithTask(task -> {
-                                    if(task.isSuccessful()) {
+                                    if (task.isSuccessful()) {
                                         final FirebaseUser fUser = task.getResult().getUser();
                                         if (fUser == null) {
                                             return null;

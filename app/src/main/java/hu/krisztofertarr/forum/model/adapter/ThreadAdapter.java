@@ -49,7 +49,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         if (thread != null) {
             holder.bindTo(thread, clickListener);
 
-            if(holder.getBindingAdapterPosition() > lastPosition) {
+            if (holder.getBindingAdapterPosition() > lastPosition) {
                 holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_left));
                 lastPosition = holder.getBindingAdapterPosition();
             }

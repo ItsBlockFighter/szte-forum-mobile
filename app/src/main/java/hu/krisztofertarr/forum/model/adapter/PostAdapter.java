@@ -20,8 +20,8 @@ import hu.krisztofertarr.forum.model.Post;
 import hu.krisztofertarr.forum.model.Thread;
 import hu.krisztofertarr.forum.service.AuthService;
 import hu.krisztofertarr.forum.service.AvatarService;
-import hu.krisztofertarr.forum.util.task.Callback;
 import hu.krisztofertarr.forum.util.DateUtil;
+import hu.krisztofertarr.forum.util.task.Callback;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
@@ -56,7 +56,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         if (post != null) {
             holder.bindTo(post, editListener, deleteListener);
 
-            if(holder.getBindingAdapterPosition() > lastPosition) {
+            if (holder.getBindingAdapterPosition() > lastPosition) {
                 holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_up));
                 lastPosition = holder.getBindingAdapterPosition();
             }
@@ -114,7 +114,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
                         @Override
                         public void onSuccess(Uri data) {
-                            if(data == null) {
+                            if (data == null) {
                                 return;
                             }
                             Glide.with(itemView)

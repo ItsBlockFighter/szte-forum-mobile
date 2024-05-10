@@ -1,7 +1,6 @@
 package hu.krisztofertarr.forum.model.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +47,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
         if (forum != null) {
             holder.bindTo(forum, clickListener);
 
-            if(holder.getBindingAdapterPosition() > lastPosition) {
+            if (holder.getBindingAdapterPosition() > lastPosition) {
                 holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_left));
                 lastPosition = holder.getBindingAdapterPosition();
             }
@@ -76,7 +75,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
             this.title.setText(forum.getName());
             this.description.setText(forum.getDescription());
 
-            if(clickListener != null)
+            if (clickListener != null)
                 this.itemView.setOnClickListener(v -> clickListener.onClick(forum, v));
         }
     }

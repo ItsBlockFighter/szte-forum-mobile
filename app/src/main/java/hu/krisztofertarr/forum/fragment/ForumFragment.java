@@ -25,9 +25,9 @@ import hu.krisztofertarr.forum.model.Thread;
 import hu.krisztofertarr.forum.model.adapter.ForumAdapter;
 import hu.krisztofertarr.forum.model.adapter.ThreadAdapter;
 import hu.krisztofertarr.forum.service.ForumService;
-import hu.krisztofertarr.forum.util.task.Callback;
 import hu.krisztofertarr.forum.util.ComponentUtil;
 import hu.krisztofertarr.forum.util.annotation.FieldId;
+import hu.krisztofertarr.forum.util.task.Callback;
 
 public class ForumFragment extends Fragment implements NavigationBarView.OnItemSelectedListener {
 
@@ -138,7 +138,7 @@ public class ForumFragment extends Fragment implements NavigationBarView.OnItemS
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.navigation_create_thread) {
+        if (item.getItemId() == R.id.navigation_create_thread) {
             application.replaceFragment(
                     new ThreadCreateFragment(forum)
             );

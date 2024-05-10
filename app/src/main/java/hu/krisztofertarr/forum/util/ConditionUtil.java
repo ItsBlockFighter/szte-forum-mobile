@@ -9,7 +9,7 @@ import lombok.experimental.UtilityClass;
 public class ConditionUtil {
 
     public static void assertIsNotEmpty(Context context, String value, String message) {
-        if(value == null || value.isEmpty()) {
+        if (value == null || value.isEmpty()) {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
             throw new IllegalArgumentException(message);
         }

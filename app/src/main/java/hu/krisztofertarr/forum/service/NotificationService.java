@@ -9,11 +9,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import hu.krisztofertarr.forum.ForumApplication;
-import lombok.Builder;
 
 public class NotificationService {
 
