@@ -103,7 +103,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
                         @Override
                         public void onFailure(Exception e) {
-                            username.setText("Error");
+                            username.setText(R.string.error);
                         }
                     }
             );

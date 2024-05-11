@@ -69,7 +69,6 @@
             android:layout_marginEnd="20dp"
             android:text="@string/register" />
 
-        <!-- arrow with text Vissza a bejelentkezéshez -->
         <RelativeLayout
             android:id="@+id/back_to_login"
             android:layout_width="wrap_content"

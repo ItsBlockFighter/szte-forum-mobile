@@ -23,7 +23,6 @@
         android:visible="false"
         app:showAsAction="ifRoom" />
 
-    <!-- login -->
     <item
         android:id="@+id/navigation_login"
         android:icon="@drawable/user_plus_solid"

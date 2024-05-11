@@ -19,7 +19,6 @@ public class PermissionUtil {
 
     public final int REQUEST_CODE_PERMISSIONS = 100;
 
-
     public void checkAndRequestPermissions(Activity activity, String... permissions) {
         List<String> permissionsList = new ArrayList<>();
         for (String permission : permissions) {

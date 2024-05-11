@@ -77,7 +77,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         public void bindTo(Thread thread, ClickListener<Thread> clickListener) {
             this.title.setText(thread.getTitle());
             this.author.setText("...");
-            this.stats.setText("Kommentek: " + thread.getPosts().size());
+            this.stats.setText(itemView.getContext().getString(R.string.comments_counter, thread.getPosts().size()));
 
             AuthService.getInstance().getUsernameByUserId(
                     thread.getAuthorId(),
@@ -89,7 +89,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
                         @Override
                         public void onFailure(Exception e) {
-                            author.setText("Error");
+                            author.setText(R.string.error);
                         }
                     }
             );

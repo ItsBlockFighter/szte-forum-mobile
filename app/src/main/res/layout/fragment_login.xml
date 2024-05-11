@@ -9,15 +9,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        >
+        android:layout_gravity="center">
 
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="260dp"
             android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/logo"
+            android:maxWidth="260dp"
+            android:maxHeight="197dp"
+            android:scaleType="fitXY"
             android:src="@mipmap/ic_launcher_foreground" />
 
         <EditText
@@ -56,23 +59,23 @@
             android:layout_marginEnd="20dp"
             android:text="@string/login" />
 
-        <!-- login as guest with user icon -->
         <RelativeLayout
             android:id="@+id/guest_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/login"
-            android:layout_marginTop="5dp"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:layout_marginTop="5dp">
 
             <ImageView
                 android:id="@+id/guest"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginEnd="5dp"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
                 android:contentDescription="@string/guest_icon_description"
                 android:src="@drawable/user_solid" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,7 +85,6 @@
                 android:textSize="16sp" />
         </RelativeLayout>
 
-        <!-- divider -->
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"

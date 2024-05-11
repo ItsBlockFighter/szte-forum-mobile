@@ -66,8 +66,8 @@ public class LoginFragment extends Fragment {
 
     @ButtonId("login")
     public void login(View view) {
-        ConditionUtil.assertIsNotEmpty(getContext(), emailField.getText().toString(), "Kérlek adj meg egy e-mailt!");
-        ConditionUtil.assertIsNotEmpty(getContext(), passwordField.getText().toString(), "Kérlek adj meg egy jelszót!");
+        ConditionUtil.assertIsNotEmpty(getContext(), emailField.getText().toString(), getString(R.string.login_email_empty));
+        ConditionUtil.assertIsNotEmpty(getContext(), passwordField.getText().toString(), getString(R.string.login_password_empty));
 
         authService.login(
                 emailField.getText().toString(), passwordField.getText().toString(),
@@ -79,7 +79,7 @@ public class LoginFragment extends Fragment {
 
                     @Override
                     public void onFailure(Exception e) {
-                        Toast.makeText(getContext(), "Sikertelen bejelentkezés!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.login_failure, Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -100,7 +100,7 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(getContext(), "Sikertelen bejelentkezés!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.login_failure, Toast.LENGTH_SHORT).show();
             }
         });
     }

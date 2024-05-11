@@ -76,7 +76,7 @@ public class ThreadFragment extends Fragment {
 
                     @Override
                     public void onFailure(Exception e) {
-                        Toast.makeText(getContext(), "Üzenetek betöltése sikertelen!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.thread_messages_load_error, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -84,13 +84,13 @@ public class ThreadFragment extends Fragment {
                 (post, v) -> {
                     if (post.getAuthorId().equals(AuthService.getInstance().getUser().getUid())) {
                         final String content = ((EditText) v.findViewById(R.id.tv_content)).getText().toString();
-                        ConditionUtil.assertIsNotEmpty(getContext(), content, "Nem küldhetsz üres üzenetet!");
+                        ConditionUtil.assertIsNotEmpty(getContext(), content, getString(R.string.thread_message_empty_error));
 
                         post.setContent(content);
                         ForumService.getInstance().savePost(post, new Callback<Void>() {
                             @Override
                             public void onFailure(Exception e) {
-                                Toast.makeText(getContext(), "Üzenet mentése sikertelen!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.thread_message_save_failure, Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -107,7 +107,7 @@ public class ThreadFragment extends Fragment {
 
                             @Override
                             public void onFailure(Exception e) {
-                                Toast.makeText(getContext(), "Üzenet törlés sikertelen!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.thread_message_delete_failure, Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -193,7 +193,7 @@ public class ThreadFragment extends Fragment {
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(getContext(), "Sikertelen téma törlés!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), R.string.thread_delete_failure, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -201,7 +201,7 @@ public class ThreadFragment extends Fragment {
     @ButtonId("thread_send")
     public void send() {
         String content = input.getText().toString();
-        ConditionUtil.assertIsNotEmpty(getContext(), content, "Nem küldhetsz üres üzenetet!");
+        ConditionUtil.assertIsNotEmpty(getContext(), content, getString(R.string.thread_message_send_requirement_error));
 
         Post post = new Post(thread.getId(), content, AuthService.getInstance().getUser().getUid());
         ForumService.getInstance()
@@ -217,7 +217,7 @@ public class ThreadFragment extends Fragment {
 
                     @Override
                     public void onFailure(Exception e) {
-                        Toast.makeText(getContext(), "Sikertelen üzenet küldés!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.thread_message_send_failure, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

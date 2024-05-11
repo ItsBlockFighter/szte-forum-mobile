@@ -67,8 +67,8 @@ public class ThreadCreateFragment extends Fragment {
 
     @ButtonId("thread_create_button")
     public void create() {
-        ConditionUtil.assertIsNotEmpty(getContext(), title.getText().toString(), "Kérlek adj meg egy címet!");
-        ConditionUtil.assertIsNotEmpty(getContext(), content.getText().toString(), "Kérlek adj meg egy szöveget!");
+        ConditionUtil.assertIsNotEmpty(getContext(), title.getText().toString(), getString(R.string.thread_create_title_error));
+        ConditionUtil.assertIsNotEmpty(getContext(), content.getText().toString(), getString(R.string.thread_create_content_error));
 
         final String authorId = AuthService.getInstance().getUser().getUid();
 
@@ -92,8 +92,7 @@ public class ThreadCreateFragment extends Fragment {
 
             @Override
             public void onFailure(Exception e) {
-                Log.e("ThreadCreateFragment", "Failed to create thread", e);
-                Toast.makeText(getContext(), "Nem sikerült létrehozni a témát!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), R.string.thread_create_failure, Toast.LENGTH_LONG).show();
             }
         });
     }

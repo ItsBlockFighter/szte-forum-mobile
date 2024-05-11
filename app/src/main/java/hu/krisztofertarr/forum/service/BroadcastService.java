@@ -44,11 +44,11 @@ public class BroadcastService {
                         return;
                     }
                     new NotificationService.NotificationBuilder()
-                            .title("Új téma")
-                            .message("Szólj hozzá a(z) " + data.getTitle() + " témához!")
+                            .title(context.getString(R.string.notification_thread_title))
+                            .message(context.getString(R.string.notification_thread_message, data.getTitle()))
                             .action(new NotificationCompat.Action(
                                     R.drawable.note_sticky_solid,
-                                    "Megnyitás",
+                                    context.getString(R.string.notification_thread_open),
                                     NotificationService.createPendingIntent(context, data.getId())
                             ))
                             .send(context);

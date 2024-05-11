@@ -24,6 +24,8 @@ public class ComponentUtil {
                 return;
             }
             method.invoke(instance);
+        } catch (IllegalArgumentException ex) {
+            Log.d(LOG_TAG, "An exception occured", ex);
         } catch (Exception e) {
             Log.d(LOG_TAG, "Failed to invoke the click listener.", e);
         }
